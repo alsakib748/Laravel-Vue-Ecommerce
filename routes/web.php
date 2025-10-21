@@ -1,11 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AuthController;
+// use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\auth\authController;
 
-Route::get('/', function () {
-    return view('admin/index');
+
+// Route::get('/', function () {
+//     return view('admin/index');
+// });
+
+Route::get('/login', function () {
+    return view('auth/signin');
 });
+
+Route::post('/login_user', [AuthController::class, 'loginUser'])->name('login.user');
 
 Route::get('/createRole', function () {
 
