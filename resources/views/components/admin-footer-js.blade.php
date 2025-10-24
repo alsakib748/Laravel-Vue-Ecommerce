@@ -8,6 +8,7 @@
 <script src="{{ asset('assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
 <script src="{{ asset('assets/plugins/chartjs/js/Chart.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/chartjs/js/Chart.extension.js') }}"></script>
+<script src="{{ asset('snackbar/dist/js-snackbar.js') }}"></script>
 <script src="{{ asset('assets/js/index.js') }}"></script>
 <!--app JS-->
 <script src="{{ asset('assets/js/app.js') }}"></script>
@@ -30,4 +31,84 @@
             }
         });
     });
+</script>
+
+<script>
+
+    function showAlert(status, message)
+    {
+        SnackBar({
+            status: status,
+            message: message,
+            position: "br"
+        });
+    }
+
+</script>
+
+<script>
+
+    $(document).ready(function(f){
+
+        $("#formSubmit").on("submit", function(e){
+        // alert("working");
+        if($(this).parsley().validate()){
+
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            var html = `<button class="btn btn-primary" type="button" disabled=""> <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+									Loading...</button>`;
+
+            var html1 = `<input type="submit" name="submit" class="btn btn-primary px-4"
+                                                    value="Save Changes" />`;
+            $("#submitButton").html(html);
+
+            $.ajax({
+                type: "POST",
+                url: $(this).attr('action'),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(result){
+                   console.log(result);
+
+                   if(result.status == "Success"){
+                    //    SnackBar({
+                    //       status: result.status,
+                    //       message: result.message,
+                    //       position: "br"
+                    //    });
+                    showAlert(result.status, result.message);
+                       $("#submitButton").html(html1);
+                    //    alert('Profile updated successfully!');
+                   }else{
+                    //     SnackBar({
+                    //       status: result.status,
+                    //       message: result.message,
+                    //       position: "br"
+                    //    });
+                    showAlert(result.status, result.message);
+                       $("#submitButton").html(html1);
+                    //    alert('Error: ' + result.message);
+                   }
+
+                },
+                // error: function(xhr, status, error){
+                //     console.log(xhr.responseText);
+                // },
+                // complete: function(xhr, status){
+                //     console.log(xhr.responseText);
+                // }
+
+                // $("#submitButton").html(html1);
+            });
+        }
+
+        });
+
+    });
+
 </script>

@@ -9,6 +9,7 @@
     <link href="{{ asset('assets/plugins/simplebar/css/simplebar.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('snackbar/dist/js-snackbar.css') }}" rel="stylesheet" />
     <!-- loader-->
     <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
@@ -25,5 +26,8 @@
     <link rel="stylesheet" href="https://developercodez.com/developerCorner/parsley/parsley.css">
     <!--plugins-->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
+
+
+
     <title>Laravel Vue Ecommerce</title>
 </head>

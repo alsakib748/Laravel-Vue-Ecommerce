@@ -1016,6 +1016,9 @@
                                 </div>
                             </div>
                             <div class="col-lg-8">
+
+                            <form action="{{ route('save.profile') }}" method="POST" enctype="multipart/form-data" id="formSubmit" class="">
+                                @csrf
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="row mb-3">
@@ -1023,7 +1026,7 @@
                                                 <h6 class="mb-0">Full Name</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" name="name"
                                                     value="{{ Auth::user()->name }}" />
                                             </div>
                                         </div>
@@ -1032,7 +1035,7 @@
                                                 <h6 class="mb-0">Email</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control"
+                                                <input type="email" class="form-control" name="email"
                                                     value="{{ Auth::user()->email }}" />
                                             </div>
                                         </div>
@@ -1041,7 +1044,7 @@
                                                 <h6 class="mb-0">Phone</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" name="phone"
                                                     value="{{ Auth::user()->phone }}" />
                                             </div>
                                         </div>
@@ -1050,19 +1053,80 @@
                                                 <h6 class="mb-0">Address</h6>
                                             </div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="text" class="form-control"
+                                                <input type="text" class="form-control" name="address"
                                                     value="{{ Auth::user()->address }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Image</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="hidden" class="form-control" name="old_image"
+                                                    value="{{ Auth::user()->image }}" />
+                                                <input type="file" class="form-control" name="image" /><br/>
+                                                <img src="{{ asset(Auth::user()->image) }}" alt="Image" class="img-fluid rounded-circle" style="width: 100px; height: 100px;">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Facebook Link</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="fb_link"
+                                                    value="{{ Auth::user()->fb_link }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Twitter Link</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="twitter_link"
+                                                    value="{{ Auth::user()->twitter_link }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Instagram Link</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="insta_link"
+                                                    value="{{ Auth::user()->insta_link }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Github Link</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="github_link"
+                                                    value="{{ Auth::user()->github_link }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <h6 class="mb-0">Portfolio Link</h6>
+                                            </div>
+                                            <div class="col-sm-9 text-secondary">
+                                                <input type="text" class="form-control" name="portfolio_link"
+                                                    value="{{ Auth::user()->portfolio_link }}" />
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-3"></div>
                                             <div class="col-sm-9 text-secondary">
-                                                <input type="button" class="btn btn-primary px-4"
+                                                <span id="submitButton">
+                                                    <input type="submit" name="submit" class="btn btn-primary px-4"
                                                     value="Save Changes" />
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+                            </form>
+
                                 {{-- <div class="row">
                                     <div class="col-sm-12">
                                         <div class="card">
