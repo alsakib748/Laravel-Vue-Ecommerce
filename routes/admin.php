@@ -19,5 +19,7 @@ Route::middleware(['admin', 'auth'])->group(function () {
 
     // todo: Home Banner
     Route::get('/home_banner', [HomeBannerController::class, 'index']);
+    Route::post('/updateHomeBanner', [HomeBannerController::class, 'store'])->name('homebanner.store');
+
 
 });
