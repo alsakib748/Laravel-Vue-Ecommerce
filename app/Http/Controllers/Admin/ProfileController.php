@@ -38,7 +38,7 @@ class ProfileController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->error($validator->errors()->first(), 200, []);
+            return $this->error($validator->errors()->first(), 400, []);
             // return response()->json(['status' => 400, 'message' => $validator->errors()->first()]);
         } else {
 
