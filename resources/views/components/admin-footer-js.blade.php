@@ -84,6 +84,9 @@
                     //    });
                     showAlert(result.status, result.message);
                        $("#submitButton").html(html1);
+                    if(result.data.reload != undefined){
+                        window.location.href = window.location.href;
+                    }
                     //    alert('Profile updated successfully!');
                    }else{
                     //     SnackBar({
@@ -113,6 +116,62 @@
         });
 
     });
+
+
+    function deleteData(id, table){
+
+        let text = "Are you sure want to delete";
+
+        if(confirm(text) == true){
+
+    //   let str = '/'+id+'/'+table;
+
+    //    let actionUrl = "{{ url('deleteData"+str+"') }}";
+
+           $.ajax({
+                type: "GET",
+                url: "{{ url('/admin/deleteData') }}/" + id + "/" + table,
+                data: '',
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json',
+                success: function(result){
+                //    console.log(result);
+
+                   if(result.status == "Success"){
+                    //    SnackBar({
+                    //       status: result.status,
+                    //       message: result.message,
+                    //       position: "br"
+                    //    });
+                    showAlert(result.status, result.message);
+
+                    if(result.data.reload != undefined){
+                        window.location.href = window.location.href;
+                    }
+                    //    alert('Profile updated successfully!');
+                   }else{
+                    //     SnackBar({
+                    //       status: result.status,
+                    //       message: result.message,
+                    //       position: "br"
+                    //    });
+                    showAlert(result.status, result.message);
+                       $("#submitButton").html(html1);
+                    //    alert('Error: ' + result.message);
+                   }
+
+                },
+                error: function(xhr, status, error){
+                    showAlert(xhr.responseText.status, xhr.responseText.message);
+
+                },
+            });
+
+        }
+
+    }
 
 </script>
 

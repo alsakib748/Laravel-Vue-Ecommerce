@@ -79,7 +79,7 @@ class HomeBannerController extends Controller
                 ]
             );
 
-            return $this->success([], 'Home Banner Successfully updated');
+            return $this->success(['reload' => true], 'Home Banner Successfully updated');
 
         }
 

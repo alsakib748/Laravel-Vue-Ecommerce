@@ -27,6 +27,18 @@
             </a>
         </li>
         <li>
+            <a href="{{ url('admin/manage_size') }}">
+                <div class="parent-icon"><i class="bx bx-cookie"></i></div>
+                <div class="menu-title">Manage Size</div>
+            </a>
+        </li>
+        <li>
+            <a href="{{ url('admin/manage_color') }}">
+                <div class="parent-icon"><i class="bx bx-cookie"></i></div>
+                <div class="menu-title">Manage Color</div>
+            </a>
+        </li>
+        <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cart"></i></div>
                 <div class="menu-title">eCommerce</div>
