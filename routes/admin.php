@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SizeController;
@@ -38,6 +39,10 @@ Route::middleware(['admin', 'auth'])->group(function () {
     // todo: Attribute Value
     Route::get('/attribute-value', [AttributeController::class, 'index_attribute_value'])->name('attribute.value');
     Route::post('/update-attribute-value', [AttributeController::class, 'store_attribute_value'])->name('attribute.value.store');
+
+    // todo: Category
+    Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 
     Route::get('/deleteData/{id?}/{table?}', [DashboardController::class, 'deleteData'])->name('delete.data');
 
