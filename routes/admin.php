@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SizeController;
@@ -13,12 +14,10 @@ Route::get('/dashboard', function () {
 
 Route::middleware(['admin', 'auth'])->group(function () {
 
-
     // Additional admin routes can be added here
     // todo: Profile Section
     Route::get('/profile', [ProfileController::class, 'index'])->name('admin.profile');
     Route::post('/save/profile', [ProfileController::class, 'store'])->name('save.profile');
-
 
     // todo: Home Banner
     Route::get('/home_banner', [HomeBannerController::class, 'index']);
@@ -31,6 +30,14 @@ Route::middleware(['admin', 'auth'])->group(function () {
     // todo: Color
     Route::get('/manage_color', [ColorController::class, 'index']);
     Route::post('/updateColor', [ColorController::class, 'store'])->name('color.store');
+
+    // todo: Attributes
+    Route::get('/attribute-name', [AttributeController::class, 'index_attribute_name'])->name('attribute.name');
+    Route::post('/update-attribute-name', [AttributeController::class, 'store_attribute_name'])->name('attribute.name.store');
+
+    // todo: Attribute Value
+    Route::get('/attribute-value', [AttributeController::class, 'index_attribute_value'])->name('attribute.value');
+    Route::post('/update-attribute-value', [AttributeController::class, 'store_attribute_value'])->name('attribute.value.store');
 
     Route::get('/deleteData/{id?}/{table?}', [DashboardController::class, 'deleteData'])->name('delete.data');
 

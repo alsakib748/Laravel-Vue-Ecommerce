@@ -5,7 +5,7 @@
     <div class="page-content">
         <!--breadcrumb-->
         <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-            <div class="breadcrumb-title pe-3">Color</div>
+            <div class="breadcrumb-title pe-3">Attribute</div>
             <div class="ps-3">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb mb-0 p-0">
@@ -13,7 +13,7 @@
                             <a href="javascript:;"><i class="bx bx-home-alt"></i></a>
                         </li>
                         <li class="breadcrumb-item active" aria-current="page">
-                            Color
+                            Attribute
                         </li>
                     </ol>
                 </nav>
@@ -38,11 +38,11 @@
         </div>
         <!--end breadcrumb-->
 
-        <h6 class="mb-0 text-uppercase">Size Table</h6>
+        <h6 class="mb-0 text-uppercase">Attribute Table</h6>
         <hr />
 
         <div class="col pb-3">
-            <button type="button" class="btn btn-outline-info px-5 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="saveData('0','','')">Add Color</button>
+            <button type="button" class="btn btn-outline-info px-5 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop" onclick="saveData('0','','')">Add Attribute</button>
         </div>
 
         <div class="card">
@@ -52,8 +52,8 @@
                 <thead>
                   <tr>
                     <th>Id</th>
-                    <th>Color Name</th>
-                    <th>Color Show</th>
+                    <th>Attribute Name</th>
+                    <th>Attribute Slug</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -62,13 +62,11 @@
                     @foreach ($data as $key => $list)
                     <tr>
                         <td>{{ $list->id }}</td>
-                        <td>{{ $list->color }}</td>
+                        <td>{{ $list->name }}</td>
+                        <td>{{ $list->slug }}</td>
                         <td>
-                            <input type="color" name="" value="{{ $list->value }}" id="" style="outline: none;outline-offset:unset; border: none;">
-                        </td>
-                        <td>
-                            <button onclick="saveData('{{ $list->id }}','{{ $list->color }}','{{ $list->value }}')" type="button" class="btn btn-outline-success px-4 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
-                            <button onclick="deleteData('{{ $list->id }}','colors')" type="button" class="btn btn-outline-danger px-3 radius-30">Delete</button>
+                            <button onclick="saveData('{{ $list->id }}','{{ $list->name }}','{{ $list->slug }}')" type="button" class="btn btn-outline-success px-4 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
+                            <button onclick="deleteData('{{ $list->id }}','attributes')" type="button" class="btn btn-outline-danger px-3 radius-30">Delete</button>
                         </td>
                       </tr>
                     @endforeach
@@ -77,8 +75,8 @@
                 <tfoot>
                   <tr>
                     <th>Id</th>
-                    <th>Color Name</th>
-                    <th>Color Show</th>
+                    <th>Attribute Name</th>
+                    <th>Attribute Slug</th>
                     <th>Action</th>
                   </tr>
                 </tfoot>
@@ -94,32 +92,34 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Size</h1>
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Attribute</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
 
-    <form id="formSubmit" action="{{ route('color.store') }}" method="POST" enctype="multipart/form-data">
+    <form id="formSubmit" action="{{ route('attribute.name.store') }}" method="POST" enctype="multipart/form-data">
     @csrf
         <div class="modal-body">
 
             <div class="border p-4 rounded">
+
                 {{-- <div class="card-title d-flex align-items-center">
                     <div><i class="bx bxs-user me-1 font-22 text-info"></i>
                     </div>
                     <h5 class="mb-0 text-info">User Registration</h5>
                 </div>
                 <hr> --}}
+
                 <div class="row mb-3">
-                    <label for="text" class="col-sm-3 col-form-label">Color</label>
+                    <label for="text" class="col-sm-3 col-form-label">Attribute Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="color" id="enter_color" placeholder="Enter the Color">
+                        <input type="text" class="form-control" name="name" id="enter_name" placeholder="Name">
                     </div>
                 </div>
 
                 <div class="row mb-3">
-                    <label for="text" class="col-sm-3 col-form-label">Value</label>
+                    <label for="text" class="col-sm-3 col-form-label">Attribute Slug</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="value" id="enter_value" placeholder="Enter the Value">
+                        <input type="text" class="form-control" name="slug" id="enter_slug" placeholder="Slug">
                     </div>
                 </div>
 
@@ -143,12 +143,10 @@
 
   <script>
 
-      function saveData(id, color, value){
-
+      function saveData(id, name, slug){
         $("#enter_id").val(id);
-        $("#enter_color").val(color);
-        $("#enter_value").val(value);
-
+        $("#enter_name").val(name);
+        $("#enter_slug").val(slug);
       }
 
   </script>

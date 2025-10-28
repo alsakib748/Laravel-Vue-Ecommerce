@@ -38,6 +38,34 @@
                 <div class="menu-title">Manage Color</div>
             </a>
         </li>
+
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-cart"></i></div>
+                <div class="menu-title">Attributes</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('attribute.name') }}"><i class="bx bx-right-arrow-alt"></i>Attribute Name</a>
+                </li>
+                <li>
+                    <a href="{{ route('attribute.value') }}"><i class="bx bx-right-arrow-alt"></i>Attribute Value</a>
+                </li>
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-cart"></i></div>
+                <div class="menu-title">Category</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('category.index') }}"><i class="bx bx-right-arrow-alt"></i>Category</a>
+                </li>
+            </ul>
+        </li>
+
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cart"></i></div>
