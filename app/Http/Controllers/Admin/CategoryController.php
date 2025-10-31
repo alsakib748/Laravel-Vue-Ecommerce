@@ -42,14 +42,35 @@ class CategoryController extends Controller
             return $this->error($validation->errors()->first(), 400, []);
         } else {
 
-            Category::updateOrCreate(
-                ['id' => $request->id],
-                values: [
-                    'name' => $request->name,
-                    'slug' => Str::slug($request->slug),
-                    // 'image' => $image,
-                ]
-            );
+            if ($request->id > 0) {
+                $image = Category::find($request->id);
+                $imageName = $image->image;
+                $imageName = $this->saveImage($request->image, $imageName, 'images/categories');
+            } else {
+                $imageName = $this->saveImage($request->image, '', 'images/categories');
+            }
+
+            if ($request->parent_category_id != null) {
+                Category::updateOrCreate(
+                    ['id' => $request->id],
+                    values: [
+                        'name' => $request->name,
+                        'slug' => Str::slug($request->slug),
+                        'image' => $imageName,
+                        'parent_category_id' => $request->parent_category_id
+                    ]
+                );
+            } else {
+                Category::updateOrCreate(
+                    ['id' => $request->id],
+                    values: [
+                        'name' => $request->name,
+                        'slug' => Str::slug($request->slug),
+                        'image' => $imageName
+                    ]
+                );
+            }
+
             return $this->success(['reload' => true], 'Category Successfully updated');
 
         }

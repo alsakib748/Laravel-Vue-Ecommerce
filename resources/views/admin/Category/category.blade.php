@@ -63,10 +63,13 @@
                     <tr>
                         <td>{{ $list->id }}</td>
                         <td>{{ $list->name }}</td>
-                        <td>{{ $list->image }}</td>
+                        <td>
+                            {{-- <img src="{{ asset($list->image) }}" alt="" class="img-fluid"> --}}
+                            <img src="{{ asset($list->image) }}" style="width: 120px;height: 90px;" alt="">
+                        </td>
                         <td>{{ $list->value }}</td>
                         <td>
-                            <button onclick="saveData('{{ $list->id }}','{{ $list->name }}','{{ $list->slug }}','{{ $list->image }}')" type="button" class="btn btn-outline-success px-4 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
+                            <button onclick="saveData('{{ $list->id }}','{{ $list->name }}','{{ $list->slug }}','{{ $list->image }}','{{ $list->parent_category_id }}')" type="button" class="btn btn-outline-success px-4 radius-30" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Edit</button>
                             <button onclick="deleteData('{{ $list->id }}','categories')" type="button" class="btn btn-outline-danger px-3 radius-30">Delete</button>
                         </td>
                       </tr>
@@ -113,7 +116,7 @@
                 <div class="row mb-3">
                     <label for="text" class="col-sm-3 col-form-label">Category Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" name="value" id="enter_name" placeholder="Enter Category Name">
+                        <input type="text" class="form-control" name="name" id="enter_name" placeholder="Enter Category Name">
                     </div>
                 </div>
 
@@ -125,7 +128,22 @@
                 </div>
 
                 <div class="row mb-3">
-                    <label for="text" class="col-sm-3 col-form-label">Image</label>
+                    <label for="text" class="col-sm-3 col-form-label">Parent Category Id</label>
+                    <div class="col-sm-9">
+                        {{-- <input type="text" class="form-control" name="name" id="enter_name" placeholder="Name"> --}}
+                        <select name="parent_category_id" id="parent_category_id" class="form-control" id="">
+                            <option selected value="">Select Parent Id</option>
+                            @if($attributes->isNotEmpty())
+                                @foreach ($attributes as $key => $attribute)
+                                   <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <label for="enter_image" class="col-sm-3 col-form-label">Image</label>
                     <div class="col-sm-9">
                         <input type="file" class="form-control" name="image" id="enter_image" placeholder="Image">
                     </div>
@@ -154,21 +172,24 @@
 
   <script>
 
-      function saveData(id, name,slug,image){
+      function saveData(id, name,slug,image, parent_category_id){
         $("#enter_id").val(id);
         $("#enter_name").val(name);
         $("#enter_slug").val(slug);
-        $("#enter_image").val(image);
+        $("#parent_category_id").val(parent_category_id);
+        // $("#enter_image").val(image);
 
-        if(image == ''){
-            var key_image = "{{ URL::asset('images/upload.png') }}";
-        }else{
-            var key_image = "{{ URL::asset('') }}"+image;
-            // $('#photo').attr(required,false);
+        // console.log($("#enter_image").val(image));
+
+        var key_image;
+
+        if (!image) {
+            key_image = "{{ asset('images/upload.png') }}";
+        } else {
+            key_image = "{{ url('/') }}/" + String(image).replace(/^\/+/, '');
         }
 
         var html = `<img src="${key_image}" id="imgPreview" height="200px" width="200px" alt="" class="img-fluid">`;
-
         $('#image_key').html(html);
 
       }

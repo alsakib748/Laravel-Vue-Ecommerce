@@ -19,15 +19,28 @@ trait SaveFile
             }
         }
 
-        $image_name = 'images/' . uniqid() . '.' . $file->extension();
+        // Generate a clean filename and return a web-accessible relative path
+        $filename = uniqid() . '.' . $file->extension();
 
-        if ($path == '') {
-            $file->move(public_path('images/'), $image_name);
+        if ($path === '' || $path === null) {
+            // Default directory under public
+            $destination = 'images';
         } else {
-            $file->move(public_path('' . $path . '/'), $image_name);
+            // Custom subdirectory under public
+            $destination = trim($path, '/');
         }
 
-        return $image_name;
+        // Ensure the directory exists
+        $publicDestination = public_path($destination);
+        if (!File::exists($publicDestination)) {
+            File::makeDirectory($publicDestination, 0755, true);
+        }
+
+        // Move the file into the destination directory
+        $file->move($publicDestination, $filename);
+
+        // Return the relative path to be used with asset()
+        return $destination . '/' . $filename;
     }
 
 
