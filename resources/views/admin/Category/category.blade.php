@@ -133,9 +133,9 @@
                         {{-- <input type="text" class="form-control" name="name" id="enter_name" placeholder="Name"> --}}
                         <select name="parent_category_id" id="parent_category_id" class="form-control" id="">
                             <option selected value="">Select Parent Id</option>
-                            @if($attributes->isNotEmpty())
-                                @foreach ($attributes as $key => $attribute)
-                                   <option value="{{ $attribute->id }}">{{ $attribute->name }}</option>
+                            @if($data->isNotEmpty())
+                                @foreach ($data as $key => $ownCategory)
+                                   <option value="{{ $ownCategory->id }}">{{ $ownCategory->name }}</option>
                                 @endforeach
                             @endif
                         </select>
@@ -172,11 +172,22 @@
 
   <script>
 
+      let checkId = 0;
+
       function saveData(id, name,slug,image, parent_category_id){
+
+        if(checkId != 0){
+            $("#parent_category_id option[value='"+checkId+"']").show();
+        }
+
+        checkId = id;
+
         $("#enter_id").val(id);
         $("#enter_name").val(name);
         $("#enter_slug").val(slug);
         $("#parent_category_id").val(parent_category_id);
+        $("#parent_category_id option[value='"+id+"']").hide();
+
         // $("#enter_image").val(image);
 
         // console.log($("#enter_image").val(image));

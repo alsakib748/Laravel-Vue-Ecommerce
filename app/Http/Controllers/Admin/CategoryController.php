@@ -21,7 +21,7 @@ class CategoryController extends Controller
     {
         // dd("working");
         $data = Category::get();
-        $attributes = Attribute::get();
+        // $attributes = Attribute::get();
         return view('admin.Category.category', get_defined_vars());
     }
 
