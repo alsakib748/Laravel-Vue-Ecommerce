@@ -63,7 +63,19 @@
                 <li>
                     <a href="{{ route('category.index') }}"><i class="bx bx-right-arrow-alt"></i>Category</a>
                 </li>
+                <li>
+                    <a href="{{ route('category.attribute.index') }}"><i class="bx bx-right-arrow-alt"></i>
+                        Category Attribute
+                    </a>
+                </li>
             </ul>
+        </li>
+
+        <li>
+            <a href="{{ url('admin/brand') }}">
+                <div class="parent-icon"><i class="bx bx-cookie"></i></div>
+                <div class="menu-title">Brand</div>
+            </a>
         </li>
 
         <li>

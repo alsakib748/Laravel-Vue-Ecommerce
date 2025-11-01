@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\Admin\AttributeController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ColorController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\SizeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\AttributeController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
 
 Route::get('/dashboard', function () {
@@ -45,5 +46,13 @@ Route::middleware(['admin', 'auth'])->group(function () {
     Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
 
     Route::get('/deleteData/{id?}/{table?}', [DashboardController::class, 'deleteData'])->name('delete.data');
+
+    // todo: Category Attribute
+    Route::get('/category-attribute', [CategoryController::class, 'index_category_attribute'])->name('category.attribute.index');
+    Route::post('/category-attribute/store', [CategoryController::class, 'store_category_attribute'])->name('category.attribute.store');
+
+    // todo: Brand
+    Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
+    Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
 
 });
