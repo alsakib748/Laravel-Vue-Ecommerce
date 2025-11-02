@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ColorController;
@@ -54,5 +55,10 @@ Route::middleware(['admin', 'auth'])->group(function () {
     // todo: Brand
     Route::get('/brand', [BrandController::class, 'index'])->name('brand.index');
     Route::post('/brand/store', [BrandController::class, 'store'])->name('brand.store');
+
+
+    // todo: Tax
+    Route::get('/tax', [TaxController::class, 'index'])->name('tax.index');
+    Route::post('/tax/store', [TaxController::class, 'store'])->name('tax.store');
 
 });
