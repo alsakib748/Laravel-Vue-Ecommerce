@@ -88,6 +88,23 @@
         <li>
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class="bx bx-cart"></i></div>
+                <div class="menu-title">Products</div>
+            </a>
+            <ul>
+                <li>
+                    <a href="{{ route('product.index') }}"><i class="bx bx-right-arrow-alt"></i>Product</a>
+                </li>
+                {{-- <li>
+                    <a href="{{ route('category.attribute.index') }}"><i class="bx bx-right-arrow-alt"></i>
+                        Category Attribute
+                    </a>
+                </li> --}}
+            </ul>
+        </li>
+
+        <li>
+            <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class="bx bx-cart"></i></div>
                 <div class="menu-title">eCommerce</div>
             </a>
             <ul>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Admin\SizeController;
@@ -60,5 +61,9 @@ Route::middleware(['admin', 'auth'])->group(function () {
     // todo: Tax
     Route::get('/tax', [TaxController::class, 'index'])->name('tax.index');
     Route::post('/tax/store', [TaxController::class, 'store'])->name('tax.store');
+
+    // todo: Product
+    Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 
 });
