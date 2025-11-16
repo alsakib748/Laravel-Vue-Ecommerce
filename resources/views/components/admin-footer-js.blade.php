@@ -11,6 +11,49 @@
 <script src="{{ asset('assets/plugins/chartjs/js/Chart.extension.js') }}"></script>
 <script src="{{ asset('snackbar/dist/js-snackbar.js') }}"></script>
 <script src="{{ asset('assets/js/index.js') }}"></script>
+<script src="{{ asset('./ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('./ckfinder/ckfinder.js') }}"></script>
+<script src="{{ asset('./multi-select/jquery.multi-select.js') }}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        $('#attribute_id').multiSelect();
+        $('#ice-cream').multiSelect();
+        $('#line-wrap-example').multiSelect({
+            positionMenuWithin: $('.position-menu-within')
+        });
+        $('#categories').multiSelect({
+            noneText: 'All categories',
+            presets: [
+                {
+                    name: 'All categories',
+                    all: true
+                },
+                {
+                    name: 'My categories',
+                    options: ['a', 'c']
+                }
+            ]
+        });
+        $('#modal-example').multiSelect({
+            'modalHTML': '<div class="multi-select-modal">'
+        });
+    });
+</script>
+
+<script>
+    var editor = CKEDITOR.replace('desc');
+    CKFinder.setupCKEditor(editor);
+</script>
+
+{{-- <script src='https://cdn.tiny.cloud/1/vdqx2klew412up5bcbpwivg1th6nrh3murc6maz8bukgos4v/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+      selector: '#mytextarea'
+    });
+</script> --}}
+
+
 <!--app JS-->
 <script src="{{ asset('assets/js/app.js') }}"></script>
 <script src="https://developercodez.com/developerCorner/parsley/parsley.min.js"></script>

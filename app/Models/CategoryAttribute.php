@@ -12,15 +12,19 @@ class CategoryAttribute extends Model
 
     protected $guarded = [];
 
+
     public function attribute()
     {
-        // return $this->hasOne(Attribute::class, 'attribute_id', 'id');
         return $this->hasOne(Attribute::class, 'id', 'attribute_id');
+    }
+
+    public function values()
+    {
+        return $this->hasMany(AttributeValue::class, 'attributes_id', 'attribute_id');
     }
 
     public function category()
     {
-        // return $this->hasOne(Category::class, 'category_id', 'id');
         return $this->hasOne(Category::class, 'id', 'category_id');
     }
 

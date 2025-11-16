@@ -579,6 +579,8 @@
 
         <x-admin-footer-js></x-admin-footer-js>
 
+        @yield('scripts')
+
 </body>
 
 </html>

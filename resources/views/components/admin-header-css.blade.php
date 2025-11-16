@@ -31,7 +31,7 @@
     <!--plugins-->
     <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 
-
+    <link rel="stylesheet" href="{{ asset('./multi-select/example-styles.css') }}">
 
     <title>Laravel Vue Ecommerce</title>
 </head>

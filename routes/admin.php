@@ -64,6 +64,11 @@ Route::middleware(['admin', 'auth'])->group(function () {
 
     // todo: Product
     Route::get('/product', [ProductController::class, 'index'])->name('product.index');
+
+    Route::get('/manage_product/{id?}', [ProductController::class, 'view_product'])->name('manage.product');
+
+    Route::post('/get/attributes', [ProductController::class, 'getAttributes'])->name('product.getAttributes');
+
     Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
 
 });
