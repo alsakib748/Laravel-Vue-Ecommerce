@@ -32,7 +32,9 @@
 
         <div class="row">
             <div class="col-xl-12 mx-auto">
-                <div class="card border-top border-0 border-4 border-info">
+                <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                    <div class="card border-top border-0 border-4 border-info">
                     <div class="card-body">
                         <div class="border p-4 rounded">
                             <div class="card-title d-flex align-items-center">
@@ -44,31 +46,31 @@
                             <div class="row mb-3">
                                 <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Name</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputEnterYourName" value="{{ $data->name }}" placeholder="Enter Product Name">
+                                    <input type="text" class="form-control" name="name" id="inputEnterYourName" value="{{ $data->name }}" placeholder="Enter Product Name">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Slug</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputEnterYourName" value="{{ $data->slug }}" placeholder="Enter Product Slug">
+                                    <input type="text" class="form-control" name="slug" id="inputEnterYourName" value="{{ $data->slug }}" placeholder="Enter Product Slug">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Image</label>
                                 <div class="col-sm-9">
-                                    <input type="file" class="form-control" id="inputEnterYourName" value="" placeholder="Enter Product Image">
+                                    <input type="file" class="form-control" name="image" id="inputEnterYourName" value="" placeholder="Enter Product Image">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEnterYourName" class="col-sm-3 col-form-label">Item Code</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputEnterYourName" value="{{ $data->item_code }}" placeholder="Enter Product Item Code">
+                                    <input type="text" class="form-control" name="item_code" id="inputEnterYourName" value="{{ $data->item_code }}" placeholder="Enter Product Item Code">
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <label for="inputEnterYourName" class="col-sm-3 col-form-label">Keywords</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="inputEnterYourName" value="{{ $data->keywords }}" placeholder="Enter Product Keywords">
+                                    <input type="text" class="form-control" name="keywords" id="inputEnterYourName" value="{{ $data->keywords }}" placeholder="Enter Product Keywords">
                                 </div>
                             </div>
                             <div class="row mb-3">
@@ -113,47 +115,94 @@
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Attributes</label>
+                                <div class="col-sm-4">
+                                    <button type="button" id="addAttribute" class="btn btn-info w-100">Add Attribute</button>
+                                </div>
+                                <div class="" id="addAttributeContent">
+                                    <div class="attribute-item mt-4">
+                                        <div class="row">
+                                            <div class="col-sm-3"></div>
+                                            <div class="col-sm-9">
+                                                <div class="d-flex justify-content-end mb-2">
+                                                    <button type="button" class="btn btn-danger btn-sm removeAttribute">
+                                                        Remove Attribute</button>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-sm-3 mb-3">
+                                                        <select name="color[]" class="form-control" id="">
+                                                            @foreach ($color as $colorList)
+                                                               <option value="{{ $colorList->id }}" style="background-color:{{ $colorList->value }};color: #fff;" class="box_color">{{ $colorList->color }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <select name="size[]" class="form-control" id="">
+                                                            @foreach ($size as $sizeList)
+                                                               <option value="{{ $sizeList->id }}" class="box_color">{{ $sizeList->size }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="sku[]" class="form-control" placeholder="Enter SKU" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="mrp[]" class="form-control" placeholder="Enter MRP" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="price[]" class="form-control" placeholder="Enter Price" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="length[]" class="form-control" placeholder="Enter Length" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="breadth[]" class="form-control" placeholder="Enter Breadth" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="height[]" class="form-control" placeholder="Enter Height" id="" />
+                                                    </div>
+                                                    <div class="col-sm-3 mb-3">
+                                                        <input type="text" name="weight[]" class="form-control" placeholder="Enter Weight" id="" />
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Images</label>
+                                                        <div class="col-sm-9">
+                                                            <div class="mb-3">
+                                                                <button type="button" class="btn btn-info add-image">Add Image</button>
+                                                            </div>
+                                                            <div class="row add-image-multiple-input">
+                                                                <div class="col-sm-6 mb-3 image-input-wrapper">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <input type="file" name="attr_image[]" class="form-control" placeholder="Enter Product Image">
+                                                                        <button type="button" class="btn btn-danger btn-sm ms-2 remove-image-input"><i class='bx bx-trash'></i></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
                                 <label for="inputPhoneNo2" class="col-sm-3 col-form-label">Description</label>
                                 <div class="col-sm-9">
                                     <textarea id="desc" name="mytextarea">{{ $data->description }}</textarea>
                                 </div>
                             </div>
-                            <div class="row mb-3">
-                                <label for="inputChoosePassword2" class="col-sm-3 col-form-label">Choose Password</label>
-                                <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="inputChoosePassword2" placeholder="Choose Password">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputConfirmPassword2" class="col-sm-3 col-form-label">Confirm Password</label>
-                                <div class="col-sm-9">
-                                    <input type="email" class="form-control" id="inputConfirmPassword2" placeholder="Confirm Password">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputAddress4" class="col-sm-3 col-form-label">Address</label>
-                                <div class="col-sm-9">
-                                    <textarea class="form-control" id="inputAddress4" rows="3" placeholder="Address"></textarea>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="inputAddress4" class="col-sm-3 col-form-label"></label>
-                                <div class="col-sm-9">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="gridCheck4">
-                                        <label class="form-check-label" for="gridCheck4">Check me out</label>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="row">
                                 <label class="col-sm-3 col-form-label"></label>
                                 <div class="col-sm-9">
-                                    <button type="submit" class="btn btn-info px-5">Register</button>
+                                    <button type="submit" class="btn btn-info px-5">Add Product</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -164,7 +213,128 @@
 
 @section('scripts')
 
+@php
+    $colorOptions = $color->map(function ($c) {
+        return [
+            'id'    => $c->id,
+            'value' => $c->value,
+            'label' => $c->color,
+        ];
+    });
+
+    $sizeOptions = $size->map(function ($s) {
+        return [
+            'id'    => $s->id,
+            'label' => $s->size,
+        ];
+    });
+@endphp
+
 <script>
+
+    // Handle Add Attribute button click
+    $(document).on('click', '#addAttribute', function () {
+
+        const colors = @json($colorOptions);
+        const sizes  = @json($sizeOptions);
+
+        const colorSelect = colors.map(c =>
+            `<option value="${c.id}" style="background-color:${c.value};color:#fff">${c.label}</option>`
+        ).join('');
+
+        const sizeSelect = sizes.map(s =>
+            `<option value="${s.id}">${s.label}</option>`
+        ).join('');
+
+        const html = `
+            <div class="attribute-item mt-4">
+                <div class="row">
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-9">
+                        <div class="d-flex justify-content-end mb-2">
+                            <button type="button" class="btn btn-danger btn-sm removeAttribute">
+                                                        Remove Attribute</button>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-sm-3 mb-3">
+                                <select name="color[]" class="form-control">
+                                    ${colorSelect}
+                                </select>
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <select name="size[]" class="form-control">
+                                    ${sizeSelect}
+                                </select>
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="sku[]" class="form-control" placeholder="Enter SKU" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="mrp[]" class="form-control" placeholder="Enter MRP" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="price[]" class="form-control" placeholder="Enter Price" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="length[]" class="form-control" placeholder="Enter Length" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="breadth[]" class="form-control" placeholder="Enter Breadth" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="height[]" class="form-control" placeholder="Enter Height" />
+                            </div>
+                            <div class="col-sm-3 mb-3">
+                                <input type="text" name="weight[]" class="form-control" placeholder="Enter Weight" />
+                            </div>
+                            <div class="row mb-3">
+                                <label for="inputEnterYourName" class="col-sm-3 col-form-label">Product Images</label>
+                                <div class="col-sm-9">
+                                    <div class="mb-3">
+                                        <button type="button" class="btn btn-info add-image">Add Image</button>
+                                    </div>
+                                    <div class="row add-image-multiple-input">
+                                        <div class="col-sm-6 mb-3 image-input-wrapper">
+                                            <div class="d-flex align-items-center">
+                                                <input type="file" name="attr_image[]" class="form-control" placeholder="Enter Product Image">
+                                                <button type="button" class="btn btn-danger btn-sm ms-2 remove-image-input"><i class='bx bx-trash'></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $('#addAttributeContent').append(html);
+    });
+
+    // Handle Remove Attribute button click
+    $(document).on('click', '.removeAttribute', function () {
+        $(this).closest('.attribute-item').remove();
+    });
+
+    // Handle Add Image button click - append new image input
+    $(document).on('click', '.add-image', function () {
+        const imageInputHtml = `
+            <div class="col-sm-6 mb-3 image-input-wrapper">
+                <div class="d-flex align-items-center">
+                    <input type="file" name="attr_image[]" class="form-control" placeholder="Enter Product Image">
+                    <button type="button" class="btn btn-danger btn-sm ms-2 remove-image-input"><i class='bx bx-trash'></i></button>
+                </div>
+            </div>
+        `;
+        // Find the closest parent row that contains the Product Images section, then find the add-image-multiple-input container
+        $(this).closest('.row.mb-3').find('.add-image-multiple-input').append(imageInputHtml);
+    });
+
+    // Handle Remove Image Input button click
+    $(document).on('click', '.remove-image-input', function () {
+        $(this).closest('.image-input-wrapper').remove();
+    });
 
     $("#category").on('change', function(e){
 
