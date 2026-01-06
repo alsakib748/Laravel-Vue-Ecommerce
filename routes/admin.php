@@ -69,6 +69,6 @@ Route::middleware(['admin', 'auth'])->group(function () {
 
     Route::post('/get/attributes', [ProductController::class, 'getAttributes'])->name('product.getAttributes');
 
-    Route::post('/product/store', [ProductController::class, 'store'])->name('product.store');
+    Route::post('/updateProduct', [ProductController::class, 'store'])->name('product.store');
 
 });

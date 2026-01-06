@@ -68,17 +68,17 @@
                         <td>{{ $list->id }}</td>
                         <td>{{ $list->name }}</td>
                         <td>
-                            {{-- <img src="{{ asset($list->image) }}" alt="" class="img-fluid"> --}}
-                            <img src="{{ asset($list->image) }}" style="width: 120px;height: 90px;" alt="">
+                            @if($list->image)
+                                <img src="{{ asset($list->image) }}" style="width: 120px;height: 90px;" alt="">
+                            @else
+                                <span class="text-muted">No Image</span>
+                            @endif
                         </td>
-                        <td>{{ $list->value }}</td>
                         <td>
-                            <a href="{{ route('manage.product', $list->id) }}" class="text-decoration-none">
-                                <button type="button" class="btn btn-outline-success px-4 radius-30">Edit</button>
-                            </a>
+                            <a href="{{ route('manage.product', $list->id) }}" class="btn btn-outline-success px-4 radius-30 text-decoration-none">Edit</a>
                             <button onclick="deleteData('{{ $list->id }}','products')" type="button" class="btn btn-outline-danger px-3 radius-30">Delete</button>
                         </td>
-                      </tr>
+                    </tr>
                     @endforeach
                 @endif
                 </tbody>
