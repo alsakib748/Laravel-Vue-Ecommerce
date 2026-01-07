@@ -19,6 +19,7 @@ use App\Models\CategoryAttribute;
 use App\Models\ProductAttrImages;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -335,16 +336,11 @@ class ProductController extends Controller
                 }
             }
 
-            // Redirect to product list page
-            try {
-                return redirect()->route('product.index')
-                    ->with('success', 'Product ' . ($isUpdate ? 'updated' : 'created') . ' successfully');
-            } catch (\Exception $redirectException) {
-                // Fallback to URL if route fails
-                \Log::error('Redirect error: ' . $redirectException->getMessage());
-                return redirect('/admin/product')
-                    ->with('success', 'Product ' . ($isUpdate ? 'updated' : 'created') . ' successfully');
-            }
+            // Return success response with redirect URL
+            return $this->success(
+                ['reload' => true, 'redirect' => route('product.index')],
+                'Product ' . ($isUpdate ? 'updated' : 'created') . ' successfully'
+            );
 
         } catch (\Exception $e) {
             // Log the error for debugging
@@ -354,6 +350,47 @@ class ProductController extends Controller
             return redirect()->back()
                 ->with('error', 'Error saving product: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    public function destroy($id)
+    {
+        $product = Product::find($id);
+
+        if (!$product) {
+            return $this->error('Product not found', 404, []);
+        }
+
+        DB::beginTransaction();
+        try {
+            // Delete product attribute images (files + rows)
+            $attrImages = ProductAttrImages::where('product_id', $product->id)->get();
+            foreach ($attrImages as $img) {
+                if ($img->image && file_exists(public_path($img->image))) {
+                    @unlink(public_path($img->image));
+                }
+                $img->delete();
+            }
+
+            // Delete product attributes and category-based attributes
+            ProductAttr::where('product_id', $product->id)->delete();
+            ProductAttribute::where('product_id', $product->id)->delete();
+
+            // Delete main image file
+            if ($product->image && file_exists(public_path($product->image))) {
+                @unlink(public_path($product->image));
+            }
+
+            // Delete the product itself
+            $product->delete();
+
+            DB::commit();
+
+            return $this->success(['reload' => true], 'Product deleted successfully');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            \Log::error('Product delete error: ' . $e->getMessage());
+            return $this->error('Failed to delete product', 500, []);
         }
     }
 

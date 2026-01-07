@@ -71,4 +71,7 @@ Route::middleware(['admin', 'auth'])->group(function () {
 
     Route::post('/updateProduct', [ProductController::class, 'store'])->name('product.store');
 
+    // Product delete
+    Route::get('/product/delete/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
+
 });
