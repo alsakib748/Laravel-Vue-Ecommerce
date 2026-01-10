@@ -13,6 +13,10 @@ Route::get('/login', function () {
     return view('auth/signin');
 });
 
+Route::get('/apiDocs', function () {
+    return view('apiDocs');
+});
+
 Route::post('/login_user', [AuthController::class, 'loginUser'])->name('login.user');
 
 Route::get('/createRole', function () {
