@@ -34,7 +34,7 @@
                                     <div class="col-lg-6">
                                         <div class="third-slider-img">
                                             <div class="img-shape"
-                                                data-background="../assets/img/slider/third_slide_shape.png"
+                                                style="background-image:url('/front_assets/img/slider/third_slide_shape.png');"
                                                 data-animation-in="zoomIn" data-delay-in="1" data-duration-in="1.5">
                                             </div>
                                             <img src="../assets/img/slider/third_slider_img01.png" alt=""
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="third-slider-item third-slider-bg"
-                        data-background="../assets/img/slider/third_slider_bg.jpg">
+                        style="background-image:url('/front_assets/img/slider/third_slider_bg.jpg');">
                         <div class="container custom-container-two">
                             <div class="third-slider-wrap">
                                 <div class="row align-items-center">
@@ -71,7 +71,7 @@
                                     <div class="col-lg-6">
                                         <div class="third-slider-img">
                                             <div class="img-shape"
-                                                data-background="../assets/img/slider/third_slide_shape.png"
+                                                style="background-image:url('/front_assets/img/slider/third_slide_shape.png');"
                                                 data-animation-in="zoomIn" data-delay-in="1" data-duration-in="1.5">
                                             </div>
                                             <img src="../assets/img/slider/third_slider_img02.png" alt=""
@@ -84,7 +84,7 @@
                         </div>
                     </div>
                     <div class="third-slider-item third-slider-bg"
-                        data-background="../assets/img/slider/third_slider_bg.jpg">
+                        style="background-image:url('/front_assets/img/slider/third_slider_bg.jpg');">
                         <div class="container custom-container-two">
                             <div class="third-slider-wrap">
                                 <div class="row align-items-center">
@@ -108,7 +108,7 @@
                                     <div class="col-lg-6">
                                         <div class="third-slider-img">
                                             <div class="img-shape"
-                                                data-background="../assets/img/slider/third_slide_shape.png"
+                                                style="background-image:url('/front_assets/img/slider/third_slide_shape.png');"
                                                 data-animation-in="zoomIn" data-delay-in="1" data-duration-in="1.5">
                                             </div>
                                             <img src="../assets/img/slider/third_slider_img03.png" alt=""
@@ -121,7 +121,7 @@
                         </div>
                     </div>
                     <div class="third-slider-item third-slider-bg"
-                        data-background="../assets/img/slider/third_slider_bg.jpg">
+                        style="background-image:url('/front_assets/img/slider/third_slider_bg.jpg');">
                         <div class="container custom-container-two">
                             <div class="third-slider-wrap">
                                 <div class="row align-items-center">
@@ -145,7 +145,7 @@
                                     <div class="col-lg-6">
                                         <div class="third-slider-img">
                                             <div class="img-shape"
-                                                data-background="../assets/img/slider/third_slide_shape.png"
+                                                style="background-image:url('/front_assets/img/slider/third_slide_shape.png');"
                                                 data-animation-in="zoomIn" data-delay-in="1" data-duration-in="1.5">
                                             </div>
                                             <img src="../assets/img/slider/third_slider_img04.png" alt=""
@@ -2228,7 +2228,8 @@
             <section class="shoes-banner-area">
                 <div class="container">
                     <div class="shoes-banner-active">
-                        <div class="shoes-banner-bg" data-background="../assets/img/bg/shoes-banner_bg.jpg">
+                        <div class="shoes-banner-bg"
+                            style="background-image:url('/front_assets/img/bg/shoes-banner_bg.jpg');">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="shoes-banner-content">
@@ -2240,7 +2241,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="shoes-banner-bg" data-background="../assets/img/bg/shoes-banner_bg.jpg">
+                        <div class="shoes-banner-bg"
+                            style="background-image:url('/front_assets/img/bg/shoes-banner_bg.jpg');">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="shoes-banner-content">
@@ -2252,7 +2254,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="shoes-banner-bg" data-background="../assets/img/bg/shoes-banner_bg.jpg">
+                        <div class="shoes-banner-bg"
+                            style="background-image:url('/front_assets/img/bg/shoes-banner_bg.jpg');">
                             <div class="row">
                                 <div class="col-12">
                                     <div class="shoes-banner-content">
@@ -2399,6 +2402,9 @@ export default {
     name: "Index",
     components: {
         Layout,
-    }
+    },
+    // mounted() {
+    //     console.log("Index Vue Component Call");
+    // }
 };
 </script>

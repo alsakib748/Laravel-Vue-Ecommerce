@@ -532,11 +532,39 @@
             </div>
         </div>
     </footer>
+
+    <div id="scripts"></div>
+
     <!-- footer-area-end -->
 </template>
 
 <script>
 export default {
     name: "Layout",
-}
-</script>
+    mounted() {
+        var src = [
+            "front_assets/js/vendor/jquery-3.5.0.min.js",
+            "front_assets/js/popper.min.js",
+            "front_assets/js/bootstrap.min.js",
+            "front_assets/js/isotope.pkgd.min.js",
+            "front_assets/js/imagesloaded.pkgd.min.js",
+            "front_assets/js/jquery.magnific-popup.min.js",
+            "front_assets/js/jquery.mCustomScrollbar.concat.min.js",
+            "front_assets/js/bootstrap-datepicker.min.js",
+            "front_assets/js/jquery.nice-select.min.js",
+            "front_assets/js/jquery.countdown.min.js",
+            "front_assets/js/swiper-bundle.min.js",
+            "front_assets/js/jarallax.min.js",
+            "front_assets/js/slick.min.js",
+            "front_assets/js/wow.min.js",
+            "front_assets/js/nav-tool.js",
+            "front_assets/js/plugins.js",
+            "front_assets/js/main.js",
+        ];
+
+        for (var i = 0; i < src.length; i++) {
+            const script = document.createElement("script"); script.src = src[i];
+            script.async = false; document.getElementById("scripts").appendChild(script);
+        }
+    }
+} </script>
