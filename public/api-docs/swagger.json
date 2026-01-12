@@ -11,6 +11,10 @@
         {
             "name": "User",
             "description": "All User Operations"
+        },
+        {
+            "name": "Home Page Data",
+            "description": "All Home Page Data"
         }
     ],
     "paths": {
@@ -170,6 +174,25 @@
                         "type": "string"
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "Data"
+                    }
+                }
+            }
+        },
+        "/getHomeData": {
+            "get": {
+                "tags": ["Home Page Data"],
+                "summary": "Get Home Page Data",
+                "operationId": "getHomeData",
+                "produces": ["application/json"],
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [],
                 "responses": {
                     "200": {
                         "description": "Data"

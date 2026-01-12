@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Front\HomePageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\AuthController;
@@ -27,3 +28,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logoutUser', [AuthController::class, 'logout'])->name('logout.user');
 
 });
+
+// todo: Home Page Data Routes
+Route::get('/getHomeData', [HomePageController::class, 'getHomeData']);
