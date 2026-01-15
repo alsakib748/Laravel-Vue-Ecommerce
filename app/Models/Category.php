@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use URL;
 
 class Category extends Model
 {
@@ -17,6 +19,18 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id', 'id');
+    }
+
+    public function subCategories()
+    {
+        return $this->hasMany(Category::class, 'parent_category_id', 'id');
+    }
+
+    protected function Image()
+    {
+        return Attribute::make(
+            get: fn($value) => URL::to('' . $value)
+        );
     }
 
 }

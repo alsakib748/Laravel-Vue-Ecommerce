@@ -199,6 +199,25 @@
                     }
                 }
             }
+        },
+        "/getHeaderCategoriesData": {
+            "get": {
+                "tags": ["Home Page Data"],
+                "summary": "Get Home Page Data",
+                "operationId": "getHeaderCategoriesData",
+                "produces": ["application/json"],
+                "security": [
+                    {
+                        "APIKeyHeader": []
+                    }
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Data"
+                    }
+                }
+            }
         }
     },
     "securityDefinitions": {

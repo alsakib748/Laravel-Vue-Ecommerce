@@ -31,3 +31,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 // todo: Home Page Data Routes
 Route::get('/getHomeData', [HomePageController::class, 'getHomeData']);
+
+Route::get('/getHeaderCategoriesData', [HomePageController::class, 'getHeaderCategoriesData']);

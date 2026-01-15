@@ -21,7 +21,7 @@ class HomePageController extends Controller
 
         $data['banner'] = HomeBanner::get();
 
-        $data['categories'] = Category::with('products')->get();
+        $data['categories'] = Category::with('products:id,category_id,name,slug,image,item_code')->get();
 
         $data['brands'] = Brand::get();
 
@@ -30,6 +30,16 @@ class HomePageController extends Controller
             'Home Page Data Fetched Successfully'
         );
 
+    }
+
+    public function getHeaderCategoriesData()
+    {
+        $data['categories'] = Category::with('subCategories')->where('parent_category_id', null)->get();
+
+        return $this->success(
+            ['data' => $data],
+            'Categories Data Fetched Successfully'
+        );
     }
 
 }
