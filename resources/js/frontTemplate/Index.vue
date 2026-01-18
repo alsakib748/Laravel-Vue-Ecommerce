@@ -532,15 +532,17 @@ export default {
             <div class="instagram-post-area">
                 <div class="container-fluid p-0 fix">
                     <div class="row no-gutters insta-active">
-                        <div class="col">
+
+                        <div v-for="item in homeBrands" :key="item.id" class="col">
                             <div class="insta-post-item">
                                 <a href="#">
                                     <i class="fab fa-instagram"></i>
-                                    <img src="../assets/img/instagram/s_insta_post01.jpg" alt="" />
+                                    <img :src="item.image" alt="" />
                                 </a>
                             </div>
                         </div>
-                        <div class="col">
+
+                        <!-- <div class="col">
                             <div class="insta-post-item">
                                 <a href="#">
                                     <i class="fab fa-instagram"></i>
@@ -587,7 +589,8 @@ export default {
                                     <img src="../assets/img/instagram/s_insta_post04.jpg" alt="" />
                                 </a>
                             </div>
-                        </div>
+                        </div> -->
+
                     </div>
                 </div>
             </div>
