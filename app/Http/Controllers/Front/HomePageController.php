@@ -36,10 +36,24 @@ class HomePageController extends Controller
     {
         $data['categories'] = Category::with('subCategories')->where('parent_category_id', null)->get();
 
+        // dd($data);
+
         return $this->success(
             ['data' => $data],
             'Categories Data Fetched Successfully'
         );
+    }
+
+    public function getCategoryData($slug = '')
+    {
+
+        $data = Category::with('products:id,category_id,name,slug,image,item_code')->where('slug', $slug)->first();
+
+        return $this->success(
+            ['data' => $data],
+            'Category Data Fetched Successfully'
+        );
+
     }
 
 }
