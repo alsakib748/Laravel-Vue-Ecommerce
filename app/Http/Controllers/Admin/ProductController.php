@@ -129,6 +129,9 @@ class ProductController extends Controller
         }
 
         try {
+
+            $slug = replaceStr($request->slug);
+
             $isUpdate = $request->id > 0;
 
             // Handle deletion of specific images (from existing images removal UI)
@@ -167,7 +170,7 @@ class ProductController extends Controller
                 // Update product fields
                 $product->update([
                     'name' => $request->name,
-                    'slug' => Str::slug($request->slug),
+                    'slug' => $slug,
                     'image' => $imageName,
                     'item_code' => $request->item_code ?? null,
                     'keywords' => $request->keywords ?? null,
@@ -185,7 +188,7 @@ class ProductController extends Controller
 
                 $product = Product::create([
                     'name' => $request->name,
-                    'slug' => Str::slug($request->slug),
+                    'slug' => $slug,
                     'image' => $imageName,
                     'item_code' => $request->item_code ?? null,
                     'keywords' => $request->keywords ?? null,

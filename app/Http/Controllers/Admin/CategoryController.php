@@ -43,10 +43,16 @@ class CategoryController extends Controller
             return $this->error($validation->errors()->first(), 400, []);
         } else {
 
+            $slug = replaceStr($request->slug);
+
             if ($request->id > 0) {
                 $image = Category::find($request->id);
                 $imageName = $image->image;
-                $imageName = $this->saveImage($request->image, $imageName, 'images/categories');
+
+                if ($request->hasFile('image')) {
+                    $imageName = $this->saveImage($request->image, $imageName, 'images/categories');
+                }
+
             } else {
                 $imageName = $this->saveImage($request->image, '', 'images/categories');
             }
@@ -56,7 +62,7 @@ class CategoryController extends Controller
                     ['id' => $request->id],
                     values: [
                         'name' => $request->name,
-                        'slug' => Str::slug($request->slug),
+                        'slug' => $slug,
                         'image' => $imageName,
                         'parent_category_id' => $request->parent_category_id
                     ]
@@ -66,7 +72,7 @@ class CategoryController extends Controller
                     ['id' => $request->id],
                     values: [
                         'name' => $request->name,
-                        'slug' => Str::slug($request->slug),
+                        'slug' => $slug,
                         'image' => $imageName
                     ]
                 );

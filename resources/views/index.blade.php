@@ -27,13 +27,13 @@
     <link rel="stylesheet" href="{{ asset('front_assets/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('front_assets/css/responsive.css') }}" />
     <script src="{{ asset('front_assets/js/vendor/jquery-3.5.0.min.js') }}"></script>
-
 </head>
 
 <body>
     @vite('resources/css/app.css')
     <div id="app"></div>
     @vite('resources/js/app.js')
+    <div id="scripts"></div>
 
 
     <!-- todo: JS here -->
