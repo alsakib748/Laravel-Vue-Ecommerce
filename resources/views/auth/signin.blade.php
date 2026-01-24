@@ -37,12 +37,29 @@
                                         <hr />
                                     </div> --}}
                                     <div class="form-body">
-                                        <form class="row g-3" id="formSubmit">
+                                        @if (session('error'))
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                {{ session('error') }}
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+                                        @if ($errors->any())
+                                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                @foreach ($errors->all() as $error)
+                                                    <div>{{ $error }}</div>
+                                                @endforeach
+                                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                        @endif
+                                        <form class="row g-3" method="POST" action="{{ route('login.post') }}">
                                             @csrf
                                             <div class="col-12">
                                                 <label for="inputEmailAddress" class="form-label">Email Address</label>
                                                 <input type="email" class="form-control" id="inputEmailAddress"
-                                                    name="email" placeholder="Email Address">
+                                                    name="email" value="{{ old('email') }}"
+                                                    placeholder="Email Address" required>
                                             </div>
                                             <div class="col-12">
                                                 <label for="inputChoosePassword" class="form-label">Enter
@@ -50,7 +67,7 @@
                                                 <div class="input-group" id="show_hide_password">
                                                     <input type="password" class="form-control border-end-0"
                                                         id="inputChoosePassword" name="password"
-                                                        placeholder="Enter Password"> <a href="javascript:;"
+                                                        placeholder="Enter Password" required> <a href="javascript:;"
                                                         class="input-group-text bg-transparent"><i
                                                             class='bx bx-hide'></i></a>
                                                 </div>
@@ -58,7 +75,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-check form-switch">
                                                     <input class="form-check-input" type="checkbox"
-                                                        id="flexSwitchCheckChecked" checked>
+                                                        id="flexSwitchCheckChecked" name="remember" value="1">
                                                     <label class="form-check-label"
                                                         for="flexSwitchCheckChecked">Remember
                                                         Me</label>
@@ -89,28 +106,13 @@
     <x-admin-footer-js></x-admin-footer-js>
 
     <script>
-        $("#formSubmit").submit(function(e) {
-
-            e.preventDefault()
-            if ($(this).parsley().validate()) {
-                var url = "{{ url('login_user') }}";
-                $.ajax({
-                    url: url,
-                    data: $('#formSubmit').serialize(),
-                    type: 'post',
-                    success: function(result) {
-                        if (result.status == 200) {
-                            alert('Successfully submitted');
-                            window.location.href = "{{ route('admin.dashboard') }}"
-                        } else {
-                            alert('Wrong Credentials');
-                        }
-                    }
-                });
-            } else {
-                alert('Error Occurred');
-            }
-
+        $(document).ready(function() {
+            // Setup CSRF token for other AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
         });
     </script>
 

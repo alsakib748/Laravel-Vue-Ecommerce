@@ -12,9 +12,7 @@ use App\Http\Controllers\Admin\AttributeController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HomeBannerController;
 
-Route::get('/dashboard', function () {
-    return view('admin/index');
-})->middleware('admin')->name('admin.dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('admin')->name('admin.dashboard');
 
 Route::middleware(['admin', 'auth'])->group(function () {
 

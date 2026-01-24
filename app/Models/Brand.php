@@ -11,10 +11,10 @@ class Brand extends Model
 
     protected $guarded = [];
 
-    protected function Image()
+    protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => URL::to('' . $value)
+            get: fn($value) => URL::to('/' . $value)
         );
     }
 

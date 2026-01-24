@@ -63,7 +63,8 @@
                                                 <li class="mega-menu-wrap">
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
-                                                            <a href="shop.html">{{ item.name }}</a>
+                                                            <router-link :to="'/category/' + item.slug">{{ item.name
+                                                            }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -75,10 +76,10 @@
                                                     </ul>
                                                     <ul class="mega-menu-col sub-cat-post">
                                                         <li>
-                                                            <a href="shop-sidebar.html">
+                                                            <router-link :to="'/category/' + item.slug">
                                                                 <img :src="item.image" alt="" />
                                                                 <span class="btn">{{ item.name }}</span>
-                                                            </a>
+                                                            </router-link>
                                                         </li>
                                                     </ul>
                                                 </li>
@@ -448,7 +449,7 @@ export default {
     },
     mounted() {
         var src = [
-            // "/front_assets/js/vendor/jquery-3.5.0.min.js",
+            "/front_assets/js/vendor/jquery-3.5.0.min.js",
             "/front_assets/js/popper.min.js",
             "/front_assets/js/bootstrap.min.js",
             "/front_assets/js/isotope.pkgd.min.js",

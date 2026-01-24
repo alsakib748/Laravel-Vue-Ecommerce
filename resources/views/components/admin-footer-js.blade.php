@@ -1,4 +1,5 @@
 <!-- Bootstrap JS -->
+<script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/simplebar/js/simplebar.min.js') }}"></script>
 <script src="{{ asset('assets/plugins/metismenu/js/metisMenu.min.js') }}"></script>
@@ -42,8 +43,8 @@
 </script>
 
 <script>
-    // Enable CKEditor for product description
-    if (window.CKEDITOR) {
+    // Enable CKEditor for product description only if the element exists
+    if (window.CKEDITOR && document.getElementById('desc')) {
         var editor = CKEDITOR.replace('desc');
         CKFinder.setupCKEditor(editor);
     }

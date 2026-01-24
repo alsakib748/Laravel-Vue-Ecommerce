@@ -17,6 +17,7 @@ export default {
             products: [],
             brands: [],
             colors: [],
+            attributes: [],
             sizes: [],
             lowPrice: '',
             highPrice: '',
@@ -25,6 +26,7 @@ export default {
             brand: [],
             size: [],
             color: [],
+            attribute: [],
             brandColor: 'brandColor',
             sizeColor: 'sizeColor',
             colorColor: 'colorColor',
@@ -32,15 +34,35 @@ export default {
     },
     // watch work like onChange in js
     watch: {
-        '$route'() {
+        '$route'(to, from) {
+            console.log('Route changed from:', from.params.slug, 'to:', to.params.slug);
+            // Reset filter data when route changes
+            this.brand = [];
+            this.size = [];
+            this.color = [];
+            this.attribute = [];
+            // Force update slug
+            this.slug = to.params.slug;
             this.getProducts();
         }
     },
     mounted() {
-        console.log('Index file call');
+        // console.log('Index file call');
         this.getProducts();
     },
     methods: {
+
+        // showDataAttribute() {
+        //     this.getProducts();
+        // },
+
+        isNumber(evt) {
+            const charCode = (evt.which) ? evt.which : evt.keyCode;
+
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode !== 46) {
+                evt.preventDefault();
+            }
+        },
 
         addDataAttr(type, value) {
             if (type == 'brand') {
@@ -53,7 +75,7 @@ export default {
                     // false value not exist in array
                     this.brand.push(value);
                 }
-                console.log(this.brand);
+                // console.log(this.brand);
             } else if (type == 'size') {
                 // console.log(this.brand);
                 if (this.checkArray(type, value)) {
@@ -64,7 +86,7 @@ export default {
                     // false value not exist in array
                     this.size.push(value);
                 }
-                console.log(this.brand);
+                // console.log(this.size);
             } else if (type == 'color') {
                 // console.log(this.brand);
                 if (this.checkArray(type, value)) {
@@ -75,7 +97,19 @@ export default {
                     // false value not exist in array
                     this.color.push(value);
                 }
-                console.log(this.color);
+                // console.log(this.color);
+            }
+            else if (type == 'attribute') {
+                // console.log(this.brand);
+                if (this.checkArray(type, value)) {
+                    // true value exist in array
+                    this.attribute.splice(this.attribute.indexOf(value), 1);
+                }
+                else {
+                    // false value not exist in array
+                    this.attribute.push(value);
+                }
+                // console.log(this.color);
             }
         },
 
@@ -87,6 +121,8 @@ export default {
                 return this.size.includes(value);
             } else if (type == 'color') {
                 return this.color.includes(value);
+            } else if (type == 'attribute') {
+                return this.attribute.includes(value);
             }
 
         },
@@ -99,27 +135,60 @@ export default {
                 // this.slug = route.params.slug;
                 this.slug = this.$route.params.slug;
 
-                // console.log(this.slug);
+                console.log('getProducts called with slug:', this.slug);
 
                 if (this.slug == '' || this.slug == undefined || this.slug == null) {
                     this.$router.push({ name: 'Index' });
                 } else {
-                    let data = await axios.get(getUrlList().getCategoryData + '/' + this.slug);
+                    // Add small delay to ensure DOM is ready
+                    await this.$nextTick();
+                    // let data = await axios.get(getUrlList().getCategoryData + '/' + this.slug);
 
-                    console.log('Category Data', data);
+                    let data = await axios.post(getUrlList().getCategoryData + '?t=' + Date.now(), {
+                        "slug": this.slug,
+                        "lowPrice": this.$refs.lowPrice ? this.$refs.lowPrice.value : '',
+                        "highPrice": this.$refs.highPrice ? this.$refs.highPrice.value : '',
+                        "brand": this.brand,
+                        "size": this.size,
+                        "color": this.color,
+                        "attribute": this.attribute,
+                    });
+
+                    console.log('API Request slug:', this.slug);
+                    console.log('Category Data Response', data);
 
                     if (data.status == 200 && data.data.data.data.products.data.length > 0) {
+
+                        console.log('Products received:', data.data.data.data.products.data.length);
+                        console.log('First product:', data.data.data.data.products.data[0]);
+
                         this.products = data.data.data.data.products.data;
                         this.categories = data.data.data.data.cat;
                         this.brands = data.data.data.data.brands;
                         this.colors = data.data.data.data.colors;
                         this.sizes = data.data.data.data.sizes;
-                        this.lowPrice = data.data.data.data.lowPrice;
-                        this.highPrice = data.data.data.data.highPrice;
+                        this.attributes = data.data.data.data.attributes;
+
+                        console.log('Component products after update:', this.products.length);
+                        if (this.$refs.lowPrice) {
+                            this.$refs.lowPrice.value = data.data.data.data.lowPrice;
+                        }
+                        if (this.$refs.highPrice) {
+                            this.$refs.highPrice.value = data.data.data.data.highPrice;
+                        }
 
                         this.catCount = 0;
 
                         // console.log('Products', this.products);
+                    } else {
+                        console.log('No products found or empty response');
+                        // Clear existing products when no products found
+                        this.products = [];
+                        this.categories = [];
+                        this.brands = [];
+                        this.colors = [];
+                        this.sizes = [];
+                        this.attributes = [];
                     }
                 }
 
@@ -512,7 +581,7 @@ export default {
                                             <li v-for="item in categories" :key="item.id">
                                                 <!-- <a href="#">Accessories</a><span>(6)</span> -->
                                                 <router-link :to="'/category/' + item.slug">{{ item.name
-                                                }}</router-link>
+                                                    }}</router-link>
                                             </li>
                                         </ul>
                                     </div>
@@ -523,9 +592,27 @@ export default {
                                         <div id="slider-range"></div>
                                         <div class="price_slider_amount">
                                             <span>Price :</span>
-                                            <input type="text" id="amount" v-model="priceRange"
-                                                placeholder="Add Your Price" />
+                                            <!-- todo: Here "ref" use like "id" in js -->
+                                            <input type="text" @keypress="isNumber($event)" ref="lowPrice" id="lowPrice"
+                                                placeholder="Add Your low Price" />
+                                            <input type="text" @keypress="isNumber($event)" ref="highPrice"
+                                                id="highPrice" placeholder="Add Your high Price" />
                                         </div>
+                                    </div>
+                                </div>
+                                <div v-for="item in attributes" :key="item.id" class="widget">
+                                    <h4 class="widget-title">
+                                        {{ item.attribute.name }}
+                                    </h4>
+                                    <div class="sidebar-brand-list">
+                                        <ul>
+                                            <li v-for="attrItem in item.attribute.values" :key="attrItem.id"
+                                                v-on:click="addDataAttr('attribute', attrItem.id)"
+                                                :class="this.attribute.includes(attrItem.id) ? brandColor : ''">
+                                                <a href="javascript:void(0)">{{ attrItem.value }} <i
+                                                        class="fas fa-angle-double-right"></i></a>
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
                                 <div class="widget">
@@ -568,7 +655,7 @@ export default {
                                     </div>
                                     <div class="cart-coupon">
                                         <form action="">
-                                            <button type="submit" class="btn">Filter</button>
+                                            <button v-on:click="getProducts" type="button" class="btn">Filter</button>
                                         </form>
                                     </div>
                                 </div>
@@ -635,9 +722,9 @@ export default {
                     </div>
                 </div>
 
-                <input type="hidden" id="highPrice" v-model="highPrice" />
+                <!-- <input type="hidden" id="highPrice" v-model="highPrice" />
 
-                <input type="hidden" id="lowPrice" v-model="lowPrice" />
+                <input type="hidden" id="lowPrice" v-model="lowPrice" /> -->
 
             </section>
             <!-- shop-area-end -->

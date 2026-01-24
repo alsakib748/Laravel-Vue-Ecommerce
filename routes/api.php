@@ -34,4 +34,6 @@ Route::get('/getHomeData', [HomePageController::class, 'getHomeData']);
 
 Route::get('/getHeaderCategoriesData', [HomePageController::class, 'getHeaderCategoriesData']);
 
-Route::get('/getCategoryData/{slug?}', [HomePageController::class, 'getCategoryData']);
+// Route::get('/getCategoryData/{slug?}', [HomePageController::class, 'getCategoryData']);
+
+Route::post('/getCategoryData', [HomePageController::class, 'getCategoryData']);

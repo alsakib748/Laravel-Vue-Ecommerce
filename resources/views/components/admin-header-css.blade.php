@@ -2,6 +2,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <!--favicon-->
     <link rel="icon" href="{{ asset('assets/images/favicon-32x32.png') }}" type="image/png" />
     <!--plugins-->
@@ -10,10 +11,7 @@
     <link href="{{ asset('assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}" rel="stylesheet" />
     <link href="{{ asset('assets/plugins/metismenu/css/metisMenu.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('snackbar/dist/js-snackbar.css') }}" rel="stylesheet" />
-    <link
-      href="{{ asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}"
-      rel="stylesheet"
-    />
+    <link href="{{ asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
     <!-- loader-->
     <link href="{{ asset('assets/css/pace.min.css') }}" rel="stylesheet" />
     <script src="{{ asset('assets/js/pace.min.js') }}"></script>
@@ -28,10 +26,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/semi-dark.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/header-colors.css') }}" />
     <link rel="stylesheet" href="https://developercodez.com/developerCorner/parsley/parsley.css">
-    <!--plugins-->
-    <script src="{{ asset('assets/js/jquery.min.js') }}"></script>
 
     <link rel="stylesheet" href="{{ asset('./multi-select/example-styles.css') }}">
+
+    <!--plugins-->
+    {{-- <script src="{{ asset('assets/js/jquery.min.js') }}"></script> --}}
 
     <title>Laravel Vue Ecommerce</title>
 </head>

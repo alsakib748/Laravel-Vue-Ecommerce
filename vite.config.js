@@ -26,4 +26,11 @@ export default defineConfig({
             vue: "vue/dist/vue.esm-bundler.js",
         },
     },
+    server: {
+        host: "127.0.0.1", // Use IPv4 instead of IPv6
+        port: 5173, // Default Vite port
+        hmr: {
+            host: "127.0.0.1", // Use IPv4 for HMR
+        },
+    },
 });

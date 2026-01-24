@@ -3,7 +3,10 @@ $(function () {
 
     // chart 1
 
-    var ctx = document.getElementById("chart1").getContext("2d");
+    var chart1Element = document.getElementById("chart1");
+    if (!chart1Element) return;
+
+    var ctx = chart1Element.getContext("2d");
 
     var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
     gradientStroke1.addColorStop(0, "#6078ea");

@@ -24,6 +24,9 @@ class BrandController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->all());
+
         $validation = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required|string|max:255',

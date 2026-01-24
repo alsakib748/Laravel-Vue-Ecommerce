@@ -11,10 +11,11 @@ Route::get('/', function () {
     return view('index');
 });
 
-
 Route::get('/login', function () {
     return view('auth/signin');
 });
+
+Route::post('/login', [AuthController::class, 'loginUser'])->name('login.post');
 
 Route::get('/apiDocs', function () {
     return view('apiDocs');
@@ -35,4 +36,4 @@ Route::get('/createAdmin', [AuthController::class, 'createAdmin']);
 
 Route::get('/{vue_capture?}', function () {
     return view('index');
-})->where('vue_capture', '[\/\w\.-]*');
+})->where('vue_capture', '^(?!admin/).*');
