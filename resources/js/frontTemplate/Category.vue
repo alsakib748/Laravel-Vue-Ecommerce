@@ -27,9 +27,9 @@ export default {
             size: [],
             color: [],
             attribute: [],
-            brandColor: 'brandColor',
-            sizeColor: 'sizeColor',
-            colorColor: 'colorColor',
+            brandColor: 'bg-primary text-white',
+            sizeColor: 'bg-primary text-white',
+            colorColor: 'border-primary border-3',
         }
     },
     // watch work like onChange in js
@@ -184,11 +184,11 @@ export default {
                         console.log('No products found or empty response');
                         // Clear existing products when no products found
                         this.products = [];
-                        this.categories = [];
-                        this.brands = [];
-                        this.colors = [];
-                        this.sizes = [];
-                        this.attributes = [];
+                        // this.categories = [];
+                        // this.brands = [];
+                        // this.colors = [];
+                        // this.sizes = [];
+                        // this.attributes = [];
                     }
                 }
 
@@ -226,7 +226,7 @@ export default {
                                 <nav aria-label="breadcrumb">
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item">
-                                            <a href="index.html">Home</a>
+                                            <route-link :to="'/'">Home</route-link>
                                         </li>
                                         <li class="breadcrumb-item active" aria-current="page">
                                             Shop
@@ -273,7 +273,8 @@ export default {
                                 </div>
                             </div>
                             <div class="row">
-                                <div v-for="item in products" :key="item.id" class="col-xl-4 col-sm-6">
+                                <div v-if="products.length > 0" v-for="item in products" :key="item.id"
+                                    class="col-xl-4 col-sm-6">
                                     <div class="new-arrival-item text-center mb-50">
                                         <div class="thumb mb-25">
                                             <!-- <a href="shop-details.html"><img :src="getImageUrl(item.image)"
@@ -298,6 +299,9 @@ export default {
                                             <span class="price">$ {{ item.product_attributes[0].price }}</span>
                                         </div>
                                     </div>
+                                </div>
+                                <div v-else class="col-xl-4 col-sm-6">
+                                    <h2 class="p-2 text-red-400">Data Not Found!</h2>
                                 </div>
                                 <!-- <div class="col-xl-4 col-sm-6">
                                     <div class="new-arrival-item text-center mb-50">
@@ -581,7 +585,7 @@ export default {
                                             <li v-for="item in categories" :key="item.id">
                                                 <!-- <a href="#">Accessories</a><span>(6)</span> -->
                                                 <router-link :to="'/category/' + item.slug">{{ item.name
-                                                    }}</router-link>
+                                                }}</router-link>
                                             </li>
                                         </ul>
                                     </div>
@@ -608,9 +612,10 @@ export default {
                                         <ul>
                                             <li v-for="attrItem in item.attribute.values" :key="attrItem.id"
                                                 v-on:click="addDataAttr('attribute', attrItem.id)"
-                                                :class="this.attribute.includes(attrItem.id) ? brandColor : ''">
-                                                <a href="javascript:void(0)">{{ attrItem.value }} <i
-                                                        class="fas fa-angle-double-right"></i></a>
+                                                :class="this.attribute.includes(attrItem.id) ? brandColor : ''"
+                                                class="py-2 px-3 mb-2 border rounded cursor-pointer hover:bg-gray-100">
+                                                <a href="javascript:void(0)" class="text-decoration-none">{{
+                                                    attrItem.value }} <i class="fas fa-angle-double-right"></i></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -621,9 +626,10 @@ export default {
                                         <ul>
                                             <li v-for="item in brands" :key="item.id"
                                                 v-on:click="addDataAttr('brand', item.id)"
-                                                :class="this.brand.includes(item.id) ? brandColor : ''">
-                                                <a href="javascript:void(0)">{{ item.name }} <i
-                                                        class="fas fa-angle-double-right"></i></a>
+                                                :class="this.brand.includes(item.id) ? brandColor : ''"
+                                                class="py-2 px-3 mb-2 border rounded cursor-pointer hover:bg-gray-100">
+                                                <a href="javascript:void(0)" class="text-decoration-none">{{ item.name
+                                                    }} <i class="fas fa-angle-double-right"></i></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -632,11 +638,15 @@ export default {
                                     <div class="sidebar-product-size mb-30">
                                         <h4 class="widget-title">Product Size</h4>
                                         <div class="shop-size-list">
-                                            <ul>
+                                            <ul class="d-flex flex-wrap"
+                                                style="list-style: none; padding: 0; margin: 0; gap: 8px;">
                                                 <li v-for="item in sizes" :key="item.id"
                                                     v-on:click="addDataAttr('size', item.id)"
-                                                    :class="this.size.includes(item.id) ? sizeColor : ''"><a
-                                                        href="javascript:void(0)">{{
+                                                    :class="this.size.includes(item.id) ? sizeColor : ''"
+                                                    style="margin: 0; display: flex;">
+                                                    <a href="javascript:void(0)"
+                                                        class="px-3 py-2 border rounded d-flex align-items-center justify-content-center"
+                                                        style="min-width: 60px; white-space: nowrap; font-size: 14px; text-decoration: none;">{{
                                                             item.size }}</a>
                                                 </li>
                                             </ul>
