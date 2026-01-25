@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                                }}</router-link>
+                                                            }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -510,7 +510,20 @@ export default {
         },
 
         async getUserData() {
+            try {
+                let data = await axios.post(getUrlList().getUserData,
+                    {
+                        'token': this.user_info.user_id,
+                    });
 
+                if (data.status == 200) {
+
+                } else {
+
+                }
+            } catch (error) {
+
+            }
         },
 
         async getCategories() {

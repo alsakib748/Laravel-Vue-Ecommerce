@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\CategoryAttribute;
-use App\Models\ProductAttribute;
 use App\Models\Size;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\TempUsers;
 use App\Models\HomeBanner;
 use App\Models\ProductAttr;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\ProductAttribute;
+use App\Models\CategoryAttribute;
 use App\Http\Controllers\Controller;
 
 class HomePageController extends Controller
@@ -128,6 +129,59 @@ class HomePageController extends Controller
         return $this->success(
             ['data' => get_defined_vars()],
             'Category Page Data Fetched Successfully'
+        );
+
+    }
+
+    public function getUserData(Request $request)
+    {
+        // prx($request->all());
+
+        $token = $request->token;
+
+        $checkUser = TempUsers::where('token', $token)->first();
+
+        if (isset($checkUser->id)) {
+            // token exist in DB
+            $data['user_type'] = $checkUser->user_type;
+            $data['token'] = $checkUser->token;
+
+            if (checkTokenExpiryInMinutes($checkUser->updated_at, 60)) {
+                // token has expired
+                $token = generateRandomString();
+
+                $checkUser->token = $token;
+                $checkUser->updated_at = date('Y-m-d h:i:s a', time());
+                $checkUser->save();
+
+                $data['token'] = $token;
+            } else {
+                // token  has not expired
+            }
+
+
+        } else {
+            // token not exist in DB
+
+            $user_id = rand(11111, 99999);
+            $token = generateRandomString();
+            $time = date('Y-m-d h:i:s a', time());
+
+            TempUsers::create([
+                'user_id' => $user_id,
+                'token' => $token,
+                'created_at' => $time,
+                'updated_at' => $time,
+            ]);
+
+            $data['user_type'] = 2;
+            $data['token'] = $token;
+
+        }
+
+        return $this->success(
+            ['data' => $data],
+            'Data Fetched Successfully'
         );
 
     }
