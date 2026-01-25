@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                            }}</router-link>
+                                                                }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -445,6 +445,14 @@ export default {
         return {
             result: [],
             headerCategories: [],
+            // token: false,
+            user_info: {
+                'user_id': '',
+                'auth': false
+            },
+            cartCount: 0,
+            cartProduct: [],
+            cartTotal: 0
         }
     },
     mounted() {
@@ -475,9 +483,36 @@ export default {
 
         this.getCategories();
 
+        this.getUser();
+
     },
 
     methods: {
+
+        async getUser() {
+
+            if (localStorage.getItem('user_info')) {
+
+                // user set into local storage
+
+                var user = localStorage.getItem('user_info');
+                var testUser = JSON.parse(user);
+                this.user_info.user_id = testUser.user_id;
+                this.getUserData();
+
+            } else {
+                // user not set to localStorage
+
+                this.getUserData();
+
+            }
+
+        },
+
+        async getUserData() {
+
+        },
+
         async getCategories() {
             try {
                 let data = await axios.get(getUrlList().getHeaderCategoriesData);

@@ -585,7 +585,7 @@ export default {
                                             <li v-for="item in categories" :key="item.id">
                                                 <!-- <a href="#">Accessories</a><span>(6)</span> -->
                                                 <router-link :to="'/category/' + item.slug">{{ item.name
-                                                }}</router-link>
+                                                    }}</router-link>
                                             </li>
                                         </ul>
                                     </div>
@@ -629,7 +629,7 @@ export default {
                                                 :class="this.brand.includes(item.id) ? brandColor : ''"
                                                 class="py-2 px-3 mb-2 border rounded cursor-pointer hover:bg-gray-100">
                                                 <a href="javascript:void(0)" class="text-decoration-none">{{ item.name
-                                                    }} <i class="fas fa-angle-double-right"></i></a>
+                                                }} <i class="fas fa-angle-double-right"></i></a>
                                             </li>
                                         </ul>
                                     </div>
