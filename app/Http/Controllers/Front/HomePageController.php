@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Cart;
 use App\Models\Size;
 use App\Models\Brand;
 use App\Models\Color;
@@ -15,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Models\ProductAttribute;
 use App\Models\CategoryAttribute;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class HomePageController extends Controller
 {
@@ -28,7 +30,12 @@ class HomePageController extends Controller
 
         $data['banner'] = HomeBanner::get();
 
-        $data['categories'] = Category::with('products:id,category_id,name,slug,image,item_code')->get();
+        $data['categories'] = Category::with([
+            'products' => function ($query) {
+                $query->select('id', 'category_id', 'name', 'slug', 'image', 'item_code')
+                    ->with('productAttributes:id,product_id,size_id,color_id,price,mrp');
+            }
+        ])->get();
 
         $data['brands'] = Brand::get();
 
@@ -260,6 +267,99 @@ class HomePageController extends Controller
             $result->slug = replaceStr($result->name);
 
             $result->save();
+        }
+    }
+
+    public function getCartData(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token'
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $userToken = TempUsers::where('token', $request->token)->first();
+            $data = Cart::where('user_id', $userToken->user_id)->with('products')->get();
+
+            return $this->success([
+                'data' => $data
+            ], 'Successfully data fetched');
+        }
+
+    }
+
+    public function addToCart(Request $request)
+    {
+
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token',
+            'product_id' => 'required|exists:products,id',
+            'product_attr_id' => 'required|exists:product_attrs,id',
+            'qty' => 'required|numeric|min:0|not_in:0',
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $user = TempUsers::where('token', $request->token)->first();
+
+            $data = Cart::updateOrCreate(
+                [
+                    'user_id' => $user->user_id,
+                    'product_id' => $request->product_id,
+                    'product_attr_id' => $request->product_attr_id,
+                ],
+                [
+                    'user_id' => $user->user_id,
+                    'product_id' => $request->product_id,
+                    'product_attr_id' => $request->product_attr_id,
+                    'qty' => $request->qty,
+                    'user_type' => $user->user_type
+                ]
+            );
+
+            return $this->success([
+                'data' => $data
+            ], 'Successfully data fetched');
+        }
+
+    }
+
+    public function removeCartData(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token',
+            'product_id' => 'required|exists:products,id',
+            'product_attr_id' => 'required|exists:product_attrs,id',
+            'qty' => 'required|numeric|min:0|not_in:0',
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $user = TempUsers::where('token', $request->token)->first();
+
+            $cart = Cart::where('user_id', $user->user_id)
+                ->where('product_id', $request->product_id)
+                ->where('product_attr_id', $request->product_attr_id)
+                ->first();
+
+            if (isset($cart->id)) {
+                $qty = $request->qty;
+                if ($cart->qty == $qty) {
+                    $cart->delete();
+                } else if ($cart->qty > $qty) {
+                    $cart->qty -= $qty;
+                    $cart->save();
+                } else {
+                    $cart->delete();
+                }
+            }
+
+            return $this->success([
+                'data' => ''
+            ], 'Cart Data Removed successfully');
         }
     }
 

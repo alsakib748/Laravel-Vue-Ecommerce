@@ -41,7 +41,6 @@ function generateRandomString($length = 20)
     for ($i = 0; $i < $length; $i++) {
         $str .= $ch[random_int(0, $len - 1)];
     }
-
     return $str;
 
 }

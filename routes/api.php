@@ -40,3 +40,9 @@ Route::get('/getHeaderCategoriesData', [HomePageController::class, 'getHeaderCat
 Route::post('/getCategoryData', [HomePageController::class, 'getCategoryData']);
 
 Route::post('/getUserData', [HomePageController::class, 'getUserData']);
+
+Route::post('/getCartData', [HomePageController::class, 'getCartData']);
+
+Route::post('/addToCart', [HomePageController::class, 'addToCart']);
+
+Route::post('/removeCartData', [HomePageController::class, 'removeCartData']);

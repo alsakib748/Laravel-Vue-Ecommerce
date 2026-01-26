@@ -9,4 +9,13 @@ class Cart extends Model
 
     protected $guarded = [];
 
+    public function products()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id')->with('productAttributes');
+    }
+
+    protected $hidden = [
+        'id',
+    ];
+
 }
