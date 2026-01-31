@@ -39,6 +39,8 @@ Route::get('/getHeaderCategoriesData', [HomePageController::class, 'getHeaderCat
 
 Route::post('/getCategoryData', [HomePageController::class, 'getCategoryData']);
 
+Route::get('/getProductData/{item_code?}/{slug?}', [HomePageController::class, 'getProductData']);
+
 Route::post('/getUserData', [HomePageController::class, 'getUserData']);
 
 Route::post('/getCartData', [HomePageController::class, 'getCartData']);

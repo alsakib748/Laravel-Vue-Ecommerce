@@ -64,16 +64,18 @@ export default {
                                     <div class="features-product-item">
                                         <div class="features-product-thumb">
                                             <div class="discount-tag">-20%</div>
-                                            <a href="shop-details.html">
+                                            <router-link :to="'/product/' + item.item_code + '/' + item.slug">
                                                 <img :src="item.image" alt="" />
-                                            </a>
+                                            </router-link>
                                             <div class="product-overlay-action">
                                                 <ul>
                                                     <li>
                                                         <a href="cart.html"><i class="far fa-heart"></i></a>
                                                     </li>
                                                     <li>
-                                                        <a href="shop-details.html"><i class="far fa-eye"></i></a>
+                                                        <router-link
+                                                            :to="'/product/' + item.item_code + '/' + item.slug"><i
+                                                                class="far fa-eye"></i></router-link>
                                                     </li>
                                                     <li
                                                         v-if="item.product_attributes && item.product_attributes.length > 0">
@@ -92,7 +94,8 @@ export default {
                                                 <i class="far fa-star"></i>
                                             </div>
                                             <h5>
-                                                <a href="shop-details.html">{{ item.name }}</a>
+                                                <router-link :to="'/product/' + item.item_code + '/' + item.slug"> {{
+                                                    item.name }} </router-link>
                                             </h5>
                                             <p class="price">$67.00</p>
                                             <div class="features-product-bottom">

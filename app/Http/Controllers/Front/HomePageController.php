@@ -363,4 +363,19 @@ class HomePageController extends Controller
         }
     }
 
+    public function getProductData($item_code = '', $slug = '')
+    {
+        $product = Product::where(['item_code' => $item_code, 'slug' => $slug])->first();
+
+        if (isset($product->id)) {
+            $data = Product::with(['productAttributes'])->where(['item_code' => $item_code, 'slug' => $slug])->first();
+            return $this->success(
+                ['data' => $data],
+                'Product Data Fetched Successfully'
+            );
+        } else {
+            return $this->error('Product Not Found', 404);
+        }
+    }
+
 }

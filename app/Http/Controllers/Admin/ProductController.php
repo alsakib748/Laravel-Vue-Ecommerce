@@ -167,6 +167,8 @@ class ProductController extends Controller
                     $imageName = $this->saveImage($request->image, $imageName, 'images/products');
                 }
 
+                // $slug = replaceStr($request->slug);
+
                 // Update product fields
                 $product->update([
                     'name' => $request->name,
