@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                            }}</router-link>
+                                                                }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -97,7 +97,7 @@
                                         </li>
                                         <li class="header-shop-cart">
                                             <a href="#"><i class="flaticon-shopping-bag"></i><span>{{ cartCount
-                                                    }}</span></a>
+                                            }}</span></a>
                                             <ul class="minicart">
                                                 <li v-if="cartCount > 0" v-for="item in cartProduct" :key="item.id"
                                                     class="d-flex align-items-start">
@@ -633,7 +633,7 @@ export default {
                 let data = await axios.get(getUrlList().getHeaderCategoriesData);
                 if (data.status == 200 && data.data.data.data.categories.length > 0) {
                     this.headerCategories = data.data.data.data.categories;
-                    console.log(this.headerCategories);
+                    // console.log(this.headerCategories);
                 } else {
                     console.log("No Data Found");
                 }
