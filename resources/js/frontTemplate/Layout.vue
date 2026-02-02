@@ -102,7 +102,7 @@
                                                 <li v-if="cartCount > 0" v-for="item in cartProduct" :key="item.id"
                                                     class="d-flex align-items-start">
                                                     <div class="cart-img">
-                                                        <a href="#"><img :src="item.products.image" alt="" /></a>
+                                                        <a href="#"><img :src="'/' + item.products.image" alt="" /></a>
                                                     </div>
                                                     <div class="cart-content">
                                                         <h4><a href="#">{{ item.products.name }}</a></h4>
@@ -533,25 +533,32 @@ export default {
         },
 
         async addToCart(product_id, product_attr_id, qty) {
-            try {
-                let data = await axios.post(getUrlList().addToCart,
-                    {
-                        'token': this.user_info.user_id,
-                        'auth': this.user_info.auth,
-                        'product_id': product_id,
-                        'product_attr_id': product_attr_id,
-                        'qty': qty
-                    });
 
-                if (data.status == 200) {
-                    this.getCartData();
+            if (product_id == '' || product_attr_id == '' || qty == '' || qty < 1) {
+                alert('Select Color Or Qty');
+                return;
+            } else {
+                try {
+                    let data = await axios.post(getUrlList().addToCart,
+                        {
+                            'token': this.user_info.user_id,
+                            'auth': this.user_info.auth,
+                            'product_id': product_id,
+                            'product_attr_id': product_attr_id,
+                            'qty': qty
+                        });
 
-                } else {
-                    console.log('Data not found');
+                    if (data.status == 200) {
+                        this.getCartData();
+
+                    } else {
+                        console.log('Data not found');
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
             }
+
         },
 
 

@@ -1,6 +1,6 @@
 <template>
     <Layout>
-        <template v-slot:content>
+        <template v-slot:content="slotProps">
             <!-- main-area -->
             <main>
                 <!-- breadcrumb-area -->
@@ -119,11 +119,14 @@
                                             <h4 class="widget-title">Product Size</h4>
                                             <div class="shop-size-list">
                                                 <ul>
-                                                    <li><a href="#">S</a></li>
-                                                    <li><a href="#">M</a></li>
+                                                    <li v-for="item in uniqueSizes"><a href="javascript:void(0)"
+                                                            v-on:click="showColor(item), this.size = item"
+                                                            :class="this.size == item ? sizeColor : ''">{{ item
+                                                            }}</a></li>
+                                                    <!-- <li><a href="#">M</a></li>
                                                     <li><a href="#">L</a></li>
                                                     <li><a href="#">XL</a></li>
-                                                    <li><a href="#">XXL</a></li>
+                                                    <li><a href="#">XXL</a></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -131,10 +134,14 @@
                                             <h4 class="widget-title">Color</h4>
                                             <div class="shop-color-list">
                                                 <ul>
+                                                    <li v-for="item in uniqueColors"
+                                                        v-on:click="this.color.id = item.id, this.color.color = item.color, this.color.product_attr_id = item.product_attr_id"
+                                                        :style="{ backgroundColor: item.value }"
+                                                        :class="this.color.id == item.id ? colorColor : ''"
+                                                        class="border border-3 border-dark-subtle"></li>
+                                                    <!-- <li></li>
                                                     <li></li>
-                                                    <li></li>
-                                                    <li></li>
-                                                    <li></li>
+                                                    <li></li> -->
                                                 </ul>
                                             </div>
                                         </div>
@@ -142,19 +149,31 @@
                                     <div class="perched-info">
                                         <div class="cart-plus-minus">
                                             <form action="#" class="num-block">
-                                                <input type="text" class="in-num" value="1" readonly="" />
+                                                <!-- <input type="text" class="in-num" value="{{ qty }}" v-model="qty"
+                                                    readonly="" /> -->
+                                                <input type="text" class="" value="{{ qty }}" v-model="qty" min="1"
+                                                    readonly="" />
                                                 <div class="qtybutton-box">
-                                                    <span class="plus"><img src="img/icon/plus.png" alt="" /></span>
-                                                    <span class="minus dis"><img src="img/icon/minus.png"
-                                                            alt="" /></span>
+                                                    <span v-on:click="qty += 1"
+                                                        class="plus text-center d-flex align-items-center justify-content-center"><img
+                                                            src="/front_assets/img/icon/plus.png" alt="" /></span>
+                                                    <span v-on:click="qty -= 1"
+                                                        class="minus dis text-center d-flex align-items-center justify-content-center"><img
+                                                            src="/front_assets/img/icon/minus.png" alt="" /></span>
                                                 </div>
                                             </form>
                                         </div>
-                                        <a href="#" class="btn">add to cart</a>
+                                        <a href="javascript:void(0)" class="btn"
+                                            v-on:click="slotProps.addToCart(this.product.id, this.color.product_attr_id, this.qty)">add
+                                            to cart</a>
                                         <div class="wishlist-compare">
                                             <ul>
-                                                <li>
+                                                <!-- <li>
                                                     <a href="#"><i class="far fa-heart"></i> Add to Wishlist</a>
+                                                </li> -->
+                                                <li>
+                                                    <a href="javascript:void(0)"><i class="fas fa-shopping-cart"></i>
+                                                        Add to Cart</a>
                                                 </li>
                                                 <li>
                                                     <a href="#"><i class="fas fa-retweet"></i> Add to Compare List</a>
@@ -207,7 +226,7 @@
                                             </div>
                                             <span v-html="product.description"></span>
 
-                                            <div class="color-size-info">
+                                            <!-- <div class="color-size-info">
                                                 <ul>
                                                     <li><span>COLOR :</span> Black, Gray</li>
                                                     <li><span>SIZE :</span> XS, S, M, L</li>
@@ -264,7 +283,8 @@
                                                 controversy, laying out pages with meaningless filler text
                                                 can be very useful when the focus is meant to be on
                                                 design, not content.
-                                            </p>
+                                            </p> -->
+
                                         </div>
                                         <div class="tab-pane fade" id="reviews" role="tabpanel"
                                             aria-labelledby="reviews-tab">
@@ -450,18 +470,40 @@ export default {
             uniqueSizes: [],
             uniqueColors: [],
             size: '',
-            color: { id: '', text: '', product_attr: '' },
+            color: { id: '', color: '', product_attr_id: '' },
+            sizeColor: 'sizeColor',
+            colorColor: 'colorColor',
+            qty: 1,
         };
     },
     watch: {
         '$route'() {
             this.getProduct();
+        },
+        qty(val) {
+            if ((val == 0) || (val < 1)) {
+                this.qty = 1;
+            }
         }
     },
     mounted() {
         this.getProduct();
     },
     methods: {
+
+        showColor(size) {
+            this.uniqueColors = [];
+            this.color.id = '';
+            this.color.color = '';
+            this.color.product_attr_id = '';
+
+            for (var item in this.colors) {
+                if (this.colors[item].size == size) {
+                    this.uniqueColors.push(this.colors[item]);
+                    this.size = size;
+                }
+            }
+        },
 
         showActiveClass(type, index) {
             if (type == 1 && index == 0) {
@@ -496,11 +538,36 @@ export default {
                                 this.images.push(this.product.product_attributes[item].images[subItem]);
 
                             }
+
+                            // colors
+                            this.colors.push({
+                                id: this.product.product_attributes[item].colors.id,
+                                value: this.product.product_attributes[item].colors.value,
+                                product_attr_id: this.product.product_attributes[item].id,
+                                size: this.product.product_attributes[item].sizes.size,
+                            });
+
+                            // Sizes
+                            this.sizes.push({
+                                id: this.product.product_attributes[item].sizes.id,
+                                text: this.product.product_attributes[item].sizes.size,
+                                product_attr_id: this.product.product_attributes[item].id,
+                            });
+
+                            this.uniqueSizes = [...new Set(this.sizes.map(item => item.text))];
+                            this.uniqueColors = this.colors;
+
+
+                            // console.log(this.uniqueSizes);
+                            // console.log(this.sizes);
+
                         }
 
-                        // console.log(this.images);
 
-                        this.catCount = 0;
+
+                        // sizes
+
+
                     } else {
                         console.log('No product found or empty response');
                         // Clear existing products when no products found
@@ -516,3 +583,28 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.brandColor::before {
+    background-color: #ff5400;
+}
+
+.sizeColor {
+    background-color: #ff5400;
+    color: #fff;
+}
+
+.colorColor::before {
+    content: '\2713';
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 30px;
+    font-size: 25px;
+    font-weight: bold;
+    /* color: #2EC831; */
+    color: #ddd;
+    padding: 0 10px 11px 0;
+}
+</style>
