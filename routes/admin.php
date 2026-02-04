@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\TaxController;
@@ -32,6 +33,10 @@ Route::middleware(['admin', 'auth'])->group(function () {
     // todo: Color
     Route::get('/manage_color', [ColorController::class, 'index']);
     Route::post('/updateColor', [ColorController::class, 'store'])->name('color.store');
+
+    // todo: Coupon
+    Route::get('/manage_coupon', [CouponController::class, 'index'])->name('coupon.index');
+    Route::post('/updateCoupon', [CouponController::class, 'store'])->name('coupon.store');
 
     // todo: Attributes
     Route::get('/attribute-name', [AttributeController::class, 'index_attribute_name'])->name('attribute.name');
