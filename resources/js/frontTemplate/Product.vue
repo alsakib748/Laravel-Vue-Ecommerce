@@ -342,15 +342,19 @@
                                 </div>
                             </div>
                             <div class="row related-product-active">
-                                <div class="col-xl-3">
+                                <div v-for="item in otherProducts" :key="item.id" class="col-xl-3">
                                     <div class="new-arrival-item text-center">
                                         <div class="thumb mb-25">
-                                            <a href="shop-details.html"><img src="img/product/n_arrival_product01.jpg"
-                                                    alt="" /></a>
+                                            <a href="shop-details.html"><img :src="'/' + item.image" alt="" /></a>
                                             <div class="product-overlay-action">
                                                 <ul>
-                                                    <li>
+                                                    <!-- <li>
                                                         <a href="cart.html"><i class="far fa-heart"></i></a>
+                                                    </li> -->
+                                                    <li>
+                                                        <a href="javascript:void(0)"
+                                                            v-on:click="slotProps.addToCart(item.id, item.product_attributes[0].id, 1)"><i
+                                                                class="fas fa-shopping-cart"></i></a>
                                                     </li>
                                                     <li>
                                                         <a href="shop-details.html"><i class="far fa-eye"></i></a>
@@ -359,12 +363,12 @@
                                             </div>
                                         </div>
                                         <div class="content">
-                                            <h5><a href="shop-details.html">Bomber in Cotton</a></h5>
-                                            <span class="price">$37.00</span>
+                                            <h5><a href="shop-details.html">{{ item.name }}</a></h5>
+                                            <span class="price">${{ item.product_attributes[0].price }}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-3">
+                                <!-- <div class="col-xl-3">
                                     <div class="new-arrival-item text-center">
                                         <div class="thumb mb-25">
                                             <div class="discount-tag">- 20%</div>
@@ -431,7 +435,7 @@
                                             <span class="price">$12.90</span>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -474,6 +478,7 @@ export default {
             sizeColor: 'sizeColor',
             colorColor: 'colorColor',
             qty: 1,
+            otherProducts: [],
         };
     },
     watch: {
@@ -488,6 +493,7 @@ export default {
     },
     mounted() {
         this.getProduct();
+        console.log(this.otherProducts);
     },
     methods: {
 
@@ -531,6 +537,7 @@ export default {
 
                     if (data.status == 200 && data.data.data.data != null) {
                         this.product = data.data.data.data;
+                        this.otherProducts = data.data.data.data.otherProducts;
 
                         for (var item in this.product.product_attributes) {
                             for (var subItem in this.product.product_attributes[item].images) {
@@ -550,11 +557,11 @@ export default {
                             // Sizes
                             this.sizes.push({
                                 id: this.product.product_attributes[item].sizes.id,
-                                text: this.product.product_attributes[item].sizes.size,
+                                size: this.product.product_attributes[item].sizes.size,
                                 product_attr_id: this.product.product_attributes[item].id,
                             });
 
-                            this.uniqueSizes = [...new Set(this.sizes.map(item => item.text))];
+                            this.uniqueSizes = [...new Set(this.sizes.map(item => item.size))];
                             this.uniqueColors = this.colors;
 
 

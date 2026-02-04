@@ -369,6 +369,11 @@ class HomePageController extends Controller
 
         if (isset($product->id)) {
             $data = Product::with(['productAttributes'])->where(['item_code' => $item_code, 'slug' => $slug])->first();
+            // $data['otherProducts'] = Product::where('category_id', $data->category_id)->with(['productAttributes'])->where('id', '!=', $data->id)->get();
+            $data['otherProducts'] = Product::where('category_id', $data->category_id)->with(['productAttributes'])->get();
+
+            // dd($data['otherProducts']);
+
             return $this->success(
                 ['data' => $data],
                 'Product Data Fetched Successfully'

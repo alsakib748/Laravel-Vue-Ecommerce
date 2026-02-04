@@ -3,6 +3,7 @@ import test from "./test.vue";
 import Index from "./frontTemplate/Index.vue";
 import Category from "./frontTemplate/Category.vue";
 import Product from "./frontTemplate/Product.vue";
+import ShoppingCart from "./frontTemplate/ShoppingCart.vue";
 
 const routes = [
     {
@@ -19,6 +20,11 @@ const routes = [
         name: "Product",
         path: "/product/:item_code?/:slug?",
         component: Product,
+    },
+    {
+        name: "ShoppingCart",
+        path: "/ShoppingCart",
+        component: ShoppingCart,
     },
 ];
 

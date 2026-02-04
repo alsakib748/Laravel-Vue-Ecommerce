@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                                }}</router-link>
+                                                            }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -97,7 +97,7 @@
                                         </li>
                                         <li class="header-shop-cart">
                                             <a href="#"><i class="flaticon-shopping-bag"></i><span>{{ cartCount
-                                            }}</span></a>
+                                                    }}</span></a>
                                             <ul class="minicart">
                                                 <li v-if="cartCount > 0" v-for="item in cartProduct" :key="item.id"
                                                     class="d-flex align-items-start">
@@ -145,7 +145,9 @@
                                                 </li>
                                                 <li>
                                                     <div class="checkout-link">
-                                                        <a href="#">Shopping Cart</a>
+                                                        <!-- <a href="javascript:void(0)">Shopping Cart</a> -->
+                                                        <router-link :to="'/ShoppingCart'">Shopping Cart</router-link>
+
                                                         <a class="black-color" href="#">Checkout</a>
                                                     </div>
                                                 </li>
@@ -358,7 +360,8 @@
     <!-- main-area -->
 
     <main>
-        <slot name="content" :addToCart="addToCart"></slot>
+        <slot name="content" :addToCart="addToCart" :cartCount="cartCount" :cartProduct="cartProduct"
+            :cartTotal="cartTotal" :removeCartData="removeCartData"></slot>
     </main>
 
     <!-- main-area-end -->
@@ -534,10 +537,16 @@ export default {
 
         async addToCart(product_id, product_attr_id, qty) {
 
-            if (product_id == '' || product_attr_id == '' || qty == '' || qty < 1) {
-                alert('Select Color Or Qty');
+            if (product_id == '' || product_attr_id == '') {
+                alert('Select Color & Size');
                 return;
-            } else {
+            }
+            else if (qty == '' || qty < 1) {
+                alert('Select Qty At Least 1');
+                return;
+
+            }
+            else {
                 try {
                     let data = await axios.post(getUrlList().addToCart,
                         {
