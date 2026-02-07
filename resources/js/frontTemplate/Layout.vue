@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                                }}</router-link>
+                                                            }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -97,7 +97,7 @@
                                         </li>
                                         <li class="header-shop-cart">
                                             <a href="#"><i class="flaticon-shopping-bag"></i><span>{{ cartCount
-                                            }}</span></a>
+                                                    }}</span></a>
                                             <ul class="minicart">
                                                 <li v-if="cartCount > 0" v-for="item in cartProduct" :key="item.id"
                                                     class="d-flex align-items-start">
@@ -361,7 +361,7 @@
 
     <main>
         <slot name="content" :addToCart="addToCart" :cartCount="cartCount" :cartProduct="cartProduct"
-            :cartTotal="cartTotal" :removeCartData="removeCartData"></slot>
+            :cartTotal="cartTotal" :removeCartData="removeCartData" :addCoupon="addCoupon"></slot>
     </main>
 
     <!-- main-area-end -->
@@ -463,6 +463,7 @@ export default {
             cartCount: 0,
             cartProduct: [],
             cartTotal: 0,
+            oldCart: 0,
 
         }
 
@@ -475,6 +476,8 @@ export default {
             for (var item in val) {
                 this.cartTotal += val[item].qty * val[item].products.product_attributes[0].price;
             }
+
+            this.oldCart = this.cartTotal;
         }
     },
     mounted() {
@@ -512,8 +515,28 @@ export default {
     },
 
     methods: {
+        async addCoupon(coupon) {
+            try {
+                let data = await axios.post(getUrlList().addCoupon,
+                    {
+                        'token': this.user_info.user_id,
+                        'auth': this.user_info.auth,
+                        'cartTotal': this.oldCart,
+                        'coupon': coupon
+                    });
 
-        async removeCartData(product_id, product_attr_id, qty) {
+                if (data.status == 200) {
+                    this.cartTotal = data.data.data.data;
+                    // this.getCartData();
+
+                } else {
+                    console.log('Data not found');
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        , async removeCartData(product_id, product_attr_id, qty) {
             try {
                 let data = await axios.post(getUrlList().removeCartData,
                     {

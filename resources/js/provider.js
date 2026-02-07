@@ -9,5 +9,6 @@ export function getUrlList() {
         getCartData: "" + baseUrl + "/getCartData",
         addToCart: "" + baseUrl + "/addToCart",
         removeCartData: "" + baseUrl + "/removeCartData",
+        addCoupon: "" + baseUrl + "/addCoupon",
     };
 }

@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Size;
 use App\Models\Brand;
 use App\Models\Color;
+use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\TempUsers;
@@ -381,6 +382,49 @@ class HomePageController extends Controller
         } else {
             return $this->error('Product Not Found', 404);
         }
+    }
+
+    public function addCoupon(Request $request)
+    {
+        // dd($request->all());
+
+        $validation = Validator::make($request->all(), [
+            'coupon' => 'required|exists:coupons,name',
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $coupon = Coupon::where('name', $request->coupon)->first();
+
+            // dd($coupon);
+
+            if ($coupon->minValue <= $request->cartTotal) {
+
+                $couponValue = $coupon->value;
+
+                if ($coupon->type == 1) {
+                    // Coupon id of value type
+                    $cartTotal = $request->cartTotal - $couponValue;
+                } else {
+                    // Coupn is of percentage type
+                    $couponValue = $couponValue / 100;
+                    $couponValue = $request->cartTotal * $couponValue;
+                    $cartTotal = $request->cartTotal - $couponValue;
+                }
+
+                // prx($cartTotal);
+
+                return $this->success(
+                    ['data' => $cartTotal],
+                    'Coupon Applied Successfully'
+                );
+
+            } else {
+                return $this->error('Coupon Not Found', 404);
+            }
+        }
+
     }
 
 }

@@ -96,8 +96,11 @@
                                     <div class="shop-cart-bottom mt-20">
                                         <div class="cart-coupon">
                                             <form action="#">
-                                                <input type="text" placeholder="Enter Coupon Code..." />
-                                                <button class="btn">Apply Coupon</button>
+                                                <input type="text" placeholder="Enter Coupon Code..."
+                                                    v-model="couponName" />
+                                                <button type="button" class="btn"
+                                                    @click="slotProps.addCoupon(couponName)">Apply
+                                                    Coupon</button>
                                             </form>
                                         </div>
                                         <div class="continue-shopping">
@@ -162,5 +165,15 @@ export default {
     components: {
         Layout,
     },
+    data() {
+        return {
+            couponName: '',
+        }
+    },
+    watch: {
+        couponName(val) {
+            this.couponName = val.replace(/\s+/g, '');
+        }
+    }
 }
 </script>
