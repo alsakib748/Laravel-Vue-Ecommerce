@@ -10,5 +10,7 @@ export function getUrlList() {
         addToCart: "" + baseUrl + "/addToCart",
         removeCartData: "" + baseUrl + "/removeCartData",
         addCoupon: "" + baseUrl + "/addCoupon",
+        getUserCoupon: "" + baseUrl + "/getUserCoupon",
+        removeCoupon: "" + baseUrl + "/removeCoupon",
     };
 }

@@ -50,3 +50,7 @@ Route::post('/addToCart', [HomePageController::class, 'addToCart']);
 Route::post('/removeCartData', [HomePageController::class, 'removeCartData']);
 
 Route::post('/addCoupon', [HomePageController::class, 'addCoupon']);
+
+Route::post('/getUserCoupon', [HomePageController::class, 'getUserCoupon']);
+
+Route::post('/removeCoupon', [HomePageController::class, 'removeCoupon']);

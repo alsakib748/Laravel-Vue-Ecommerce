@@ -14,6 +14,7 @@ use App\Models\HomeBanner;
 use App\Models\ProductAttr;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
+use App\Models\UserCouponCart;
 use App\Models\ProductAttribute;
 use App\Models\CategoryAttribute;
 use App\Http\Controllers\Controller;
@@ -397,6 +398,10 @@ class HomePageController extends Controller
         } else {
             $coupon = Coupon::where('name', $request->coupon)->first();
 
+            $user = TempUsers::where('token', $request->token)->first();
+
+            $couponName = $coupon->name;
+
             // dd($coupon);
 
             if ($coupon->minValue <= $request->cartTotal) {
@@ -415,14 +420,86 @@ class HomePageController extends Controller
 
                 // prx($cartTotal);
 
+                UserCouponCart::updateOrCreate(
+                    ['user_id' => $user->user_id],
+                    [
+                        'user_id' => $user->user_id,
+                        'coupon_id' => $coupon->id
+                    ]
+                );
+
                 return $this->success(
-                    ['data' => $cartTotal],
+                    ['data' => $cartTotal, 'couponName' => $couponName],
                     'Coupon Applied Successfully'
                 );
 
             } else {
                 return $this->error('Coupon Not Found', 404);
             }
+        }
+
+    }
+
+    public function removeCoupon(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token'
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $user = TempUsers::where('token', $request->token)->first();
+            $couponUser = UserCouponCart::where('user_id', $user->user_id)->delete();
+        }
+
+        return $this->success(
+            [],
+            'Tokon Remove Successfully'
+        );
+
+    }
+
+    public function getUserCoupon(Request $request)
+    {
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token'
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+            $couponName = '';
+            $user = TempUsers::where('token', $request->token)->first();
+            $couponUser = UserCouponCart::where('user_id', $user->user_id)->delete();
+
+            if (isset($couponUser->id)) {
+                $coupon = Coupon::where('id', $couponUser->coupon_id)->first();
+                $couponName = $coupon->name;
+                if ($coupon->minValue <= $request->cartTotal) {
+                    $couponValue = $coupon->value;
+                    if ($coupon->type == 1) {
+                        // Coupon id of value type
+                        $cartTotal = $request->cartTotal - $couponValue;
+                    } else {
+                        // Coupn is of percentage type
+                        $couponValue = $couponValue / 100;
+                        $couponValue = $request->cartTotal * $couponValue;
+                        $cartTotal = $request->cartTotal - $couponValue;
+                    }
+                } else {
+                    $cartTotal = $request->cartTotal;
+                }
+
+            } else {
+                $cartTotal = $request->cartTotal;
+            }
+
+            return $this->success(
+                ['data' => $cartTotal, 'couponName' => $couponName],
+                'Data Fetch Successfully'
+            );
+
         }
 
     }

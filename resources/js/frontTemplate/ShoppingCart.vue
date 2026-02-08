@@ -96,16 +96,23 @@
                                     <div class="shop-cart-bottom mt-20">
                                         <div class="cart-coupon">
                                             <form action="#">
-                                                <input type="text" placeholder="Enter Coupon Code..."
-                                                    v-model="couponName" />
+                                                <!-- <input type="text" placeholder="Enter Coupon Code..."
+                                                    v-model="slotProps.couponName" /> -->
+                                                <input type="text" placeholder="Enter Coupon Code..." ref="couponName"
+                                                    :value="slotProps.couponName" />
                                                 <button type="button" class="btn"
-                                                    @click="slotProps.addCoupon(couponName)">Apply
+                                                    @click="slotProps.addCoupon(this.$refs.couponName.value)">Apply
                                                     Coupon</button>
                                             </form>
                                         </div>
                                         <div class="continue-shopping">
-                                            <a href="shop.html" class="btn">update shopping</a>
+                                            <a href="javascript:void(0)" @click="slotProps.getCartData(), slotProps
+                                                .removeCoupon(), this.$refs.couponName.value = ''" class="btn">Remove
+                                                Coupon</a>
                                         </div>
+                                        <!-- <div class="continue-shopping">
+                                            <a href="shop.html" class="btn">update shopping</a>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="cart-total pt-95">
@@ -135,7 +142,7 @@
                                                 </li>
                                                 <li class="cart-total-amount">
                                                     <span>TOTAL</span> <span class="amount">$ {{ slotProps.cartTotal
-                                                        }}</span>
+                                                    }}</span>
                                                 </li>
                                             </ul>
                                             <a href="checkout.html" class="btn">PROCEED TO CHECKOUT</a>
