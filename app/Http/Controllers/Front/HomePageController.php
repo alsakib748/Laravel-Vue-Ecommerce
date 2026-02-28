@@ -3,21 +3,27 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Cart;
+use App\Models\Role;
 use App\Models\Size;
+use App\Models\User;
 use App\Models\Brand;
 use App\Models\Color;
 use App\Models\Coupon;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\TempUsers;
+use App\Models\UserAddress;
+use App\Models\UserOrder;
 use App\Models\HomeBanner;
 use App\Models\ProductAttr;
+use App\Models\UserOrderDetail;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use App\Models\UserCouponCart;
 use App\Models\ProductAttribute;
 use App\Models\CategoryAttribute;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class HomePageController extends Controller
@@ -471,9 +477,11 @@ class HomePageController extends Controller
         } else {
             $couponName = '';
             $user = TempUsers::where('token', $request->token)->first();
-            $couponUser = UserCouponCart::where('user_id', $user->user_id)->delete();
+            // $couponUser = UserCouponCart::where('user_id', $user->user_id)->delete();
+            $couponUser = UserCouponCart::where('user_id', $user->user_id)->first();
 
-            if (isset($couponUser->id)) {
+            // if (isset($couponUser->id)) {
+            if ($couponUser) {
                 $coupon = Coupon::where('id', $couponUser->coupon_id)->first();
                 $couponName = $coupon->name;
                 if ($coupon->minValue <= $request->cartTotal) {
@@ -501,6 +509,194 @@ class HomePageController extends Controller
             );
 
         }
+
+    }
+
+    public function placeOrder(Request $request)
+    {
+
+        // dd($request->all());
+
+        $validation = Validator::make($request->all(), [
+            'token' => 'required|exists:temp_users,token',
+            'firstName' => 'required|string|max:100',
+            'lastName' => 'required|string|max:100',
+            'email' => 'required|email|string|max:255',
+            'phone' => 'required|string|digits_between:10,15',
+            'address' => 'required|string',
+            // 'country' => 'required|string|max:100',
+            // 'city' => 'required|string|max:100',
+            // 'state' => 'required|string|max:100',
+        ]);
+
+        if ($validation->fails()) {
+            return $this->error($validation->errors()->first(), 400, []);
+        } else {
+
+            // todo: Create user
+            $user = $this->createUser($request->all());
+
+            // todo: Save Address / Work in future
+            // $address_id = $this->saveAddress($request->all(), $user->id);
+
+            // todo: Save Order
+            // $order = $this->saveOrder($request->all(), $user->id, $address_id);
+            $order = $this->saveOrder($request->all(), $user->id);
+
+            // todo: Delete Old Data
+            $tempUser = TempUsers::where('token', $request->token)->first();
+            Cart::where('user_id', $tempUser->user_id)->delete();
+            UserCouponCart::where('user_id', $tempUser->user_id)->delete();
+            // $user->delete();
+            $tempUser->update([
+                'user_id' => $user['id'],
+                'user_type' => 1,
+                'token' => $user['token']
+            ]);
+
+            $newData['order'] = $order;
+            $newData['token'] = $user['token'];
+
+            return $this->success(['data' => [$newData]], 'Order Placed Successfully');
+
+        }
+
+    }
+
+    public function saveOrder($data, $user_id, $address_id = null)
+    {
+
+        $cart = $this->getOrderTotalValue($data);
+
+        $order = UserOrder::create([
+            'user_id' => $user_id,
+            // 'address_id' => $address_id,
+            'total_value' => $cart['carttotal'],
+            'coupon' => $cart['couponName'],
+            'payment_method' => 'cod',
+            'shipping_service' => 'standard'
+        ]);
+
+        $orderDetails = $this->saveOrderDetails($data, $user_id, $order->id);
+        return $order->id;
+
+    }
+
+    public function saveOrderDetails($data, $user_id, $order_id)
+    {
+        $user = TempUsers::where('token', $data['token'])->first();
+        $cart = Cart::where('user_id', $user->user_id)->get();
+        $totalPrice = 0;
+
+        foreach ($cart as $list) {
+            $productAttr = ProductAttr::where('id', $list->product_attr_id)->first();
+            $price = $productAttr->price * $list->qty;
+            $totalPrice += $price;
+
+            $orderDetails = UserOrderDetail::create([
+                'user_id' => $user_id,
+                'order_id' => $order_id,
+                'product_attr_id' => $list->product_attr_id,
+                'total_value' => $totalPrice,
+                'qty' => $list->qty
+            ]);
+        }
+
+        return;
+
+    }
+
+    public function getOrderTotalValue($data)
+    {
+        $couponName = '';
+        $user = TempUsers::where('token', $data['token'])->first();
+        $couponUser = UserCouponCart::where('user_id', $user->user_id)->first();
+        $totalCartValue = $this->totalCartValue($data);
+        // if (isset($couponUser->id)) {
+        if ($couponUser) {
+            $coupon = Coupon::where('id', $couponUser->coupon_id)->first();
+            $couponName = $coupon->name;
+
+            if ($coupon->minValue <= $totalCartValue) {
+                $couponValue = $coupon->value;
+                if ($coupon->type == 1) {
+                    // coupon id of value type
+                    $cartotal = $totalCartValue - $couponValue;
+                } else {
+                    // coupon is of percentage type
+                    $couponValue = $couponValue / 100;
+                    $couponValue = $totalCartValue * $couponValue;
+                    $cartotal = $totalCartValue - $couponValue;
+                }
+            } else {
+                $cartotal = $totalCartValue;
+            }
+        } else {
+            $cartotal = $totalCartValue;
+        }
+
+        $data['carttotal'] = $cartotal;
+        $data['couponName'] = $couponName;
+        return $data;
+
+    }
+
+    public function totalCartValue($data)
+    {
+        $user = TempUsers::where('token', $data['token'])->first();
+        $cart = Cart::where('user_id', $user->user_id)->get();
+        $totalPrice = 0;
+
+        foreach ($cart as $list) {
+            $productAttr = ProductAttr::where('id', $list->product_attr_id)->first();
+            $price = $productAttr->price * $list->qty;
+            $totalPrice += $price;
+        }
+
+        return $totalPrice;
+    }
+
+    public function saveAddress($data, $user_id)
+    {
+
+        $userAddress = UserAddress::updateOrCreate(
+            [
+                'user_id' => $user_id,
+                'division' => $data['division'],
+                'district' => $data['district'],
+                'city' => $data['city'],
+                'area' => $data['area'],
+                'post_code' => $data['post_code'],
+            ],
+            [
+                'user_id' => $user_id,
+                'division' => $data['division'],
+                'district' => $data['district'],
+                'city' => $data['city'],
+                'area' => $data['area'],
+                'post_code' => $data['post_code'],
+            ]
+        );
+
+        return $userAddress->id;
+
+    }
+
+    public function createUser($data)
+    {
+        $user = User::create([
+            'name' => $data['firstName'] . ' ' . $data['lastName'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['firstName'] . '@123'),
+        ]);
+
+        $customer = Role::where('slug', 'customer')->first();
+
+        $user->roles()->attach($customer);
+
+        $user['token'] = $user->createToken('API Token')->plainTextToken;
+
+        return $user;
 
     }
 

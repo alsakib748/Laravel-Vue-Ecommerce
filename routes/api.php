@@ -54,3 +54,5 @@ Route::post('/addCoupon', [HomePageController::class, 'addCoupon']);
 Route::post('/getUserCoupon', [HomePageController::class, 'getUserCoupon']);
 
 Route::post('/removeCoupon', [HomePageController::class, 'removeCoupon']);
+
+Route::post('/placeOrder', [HomePageController::class, 'placeOrder']);

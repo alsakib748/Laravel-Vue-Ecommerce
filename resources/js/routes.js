@@ -4,6 +4,7 @@ import Index from "./frontTemplate/Index.vue";
 import Category from "./frontTemplate/Category.vue";
 import Product from "./frontTemplate/Product.vue";
 import ShoppingCart from "./frontTemplate/ShoppingCart.vue";
+import Checkout from "./frontTemplate/Checkout.vue";
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         name: "ShoppingCart",
         path: "/ShoppingCart",
         component: ShoppingCart,
+    },
+    {
+        name: "Checkout",
+        path: "/checkout",
+        component: Checkout,
     },
 ];
 

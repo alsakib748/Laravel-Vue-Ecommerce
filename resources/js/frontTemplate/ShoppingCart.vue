@@ -142,10 +142,12 @@
                                                 </li>
                                                 <li class="cart-total-amount">
                                                     <span>TOTAL</span> <span class="amount">$ {{ slotProps.cartTotal
-                                                    }}</span>
+                                                        }}</span>
                                                 </li>
                                             </ul>
-                                            <a href="checkout.html" class="btn">PROCEED TO CHECKOUT</a>
+                                            <!-- <a href="checkout.html" class="btn">PROCEED TO CHECKOUT</a> -->
+                                            <router-link to="/checkout" class="btn">PROCEED TO
+                                                CHECKOUT</router-link>
                                         </form>
                                     </div>
                                 </div>

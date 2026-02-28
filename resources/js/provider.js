@@ -12,5 +12,6 @@ export function getUrlList() {
         addCoupon: "" + baseUrl + "/addCoupon",
         getUserCoupon: "" + baseUrl + "/getUserCoupon",
         removeCoupon: "" + baseUrl + "/removeCoupon",
+        placeOrder: "" + baseUrl + "/placeOrder",
     };
 }

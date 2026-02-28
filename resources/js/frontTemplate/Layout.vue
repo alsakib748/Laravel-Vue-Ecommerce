@@ -64,7 +64,7 @@
                                                     <ul class="mega-menu-col">
                                                         <li class="mega-title">
                                                             <router-link :to="'/category/' + item.slug">{{ item.name
-                                                            }}</router-link>
+                                                                }}</router-link>
                                                         </li>
                                                         <li v-for="subitem in item.sub_categories" :key="subitem.id">
                                                             <!-- <a href="shop-sidebar.html">{{ subitem.name }}</a> -->
@@ -97,7 +97,7 @@
                                         </li>
                                         <li class="header-shop-cart">
                                             <a href="#"><i class="flaticon-shopping-bag"></i><span>{{ cartCount
-                                                    }}</span></a>
+                                            }}</span></a>
                                             <ul class="minicart">
                                                 <li v-if="cartCount > 0" v-for="item in cartProduct" :key="item.id"
                                                     class="d-flex align-items-start">
@@ -569,10 +569,14 @@ export default {
                         'cartTotal': this.oldCart,
                         'coupon': coupon
                     });
+                // console.log("cart data : " + JSON.stringify(data));
+                // console.log('coupon: ' + coupon + ' cartTotal: ' + this.oldCart);
 
                 if (data.status == 200) {
+                    // if (data.status == "Success") {
                     this.cartTotal = data.data.data.data;
                     this.couponName = data.data.data.couponName;
+                    console.log('couponName: ' + this.couponName + ' cartTotal: ' + this.cartTotal);
                     // this.getCartData();
 
                 } else {

@@ -382,6 +382,7 @@
                                                 placeholder="Enter product description">{{ $data->description }}</textarea>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <label class="col-sm-3 col-form-label"></label>
                                         <div class="col-sm-9">
